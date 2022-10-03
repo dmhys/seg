@@ -1,0 +1,8 @@
+#ifndef SEG_VERSION_H
+#define SEG_VERSION_H
+
+#define SEG_VERSION_MAJOR 0
+#define SEG_VERSION_MINOR 1
+#define SEG_VERSION_REVISION 1
+
+#endif
