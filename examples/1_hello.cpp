@@ -21,7 +21,7 @@ int main()
 
     // object with name & raw pointer
     seg::addObject("Sphere", new segobj::Mesh(
-                                 segobj::primitives::Icosphere(0.498, 5)));
+                                 segobj::primitives::Icosphere(0.498, 2)));
 
     // object without name -> SEG will generate one and return it.
     std::string name = seg::addObject(new segobj::StaticPointcloud(
@@ -30,7 +30,7 @@ int main()
 
     // object given through shared pointer ( recommended )
     auto line_renderer = std::make_shared<segobj::StaticLine>(
-        segobj::primitives::Wireframe(segobj::primitives::Icosphere(0.5, 5)));
+        segobj::primitives::Wireframe(segobj::primitives::Icosphere(0.5, 2)));
     seg::addObject("Sphere Frame", line_renderer);
 
     // object with same name -> SEG will not accept it,
