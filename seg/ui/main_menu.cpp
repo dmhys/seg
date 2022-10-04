@@ -112,7 +112,7 @@ void MainMenu::about()
 
         about_window.reset(new pfd::message("About",
                                             "SEG - SLAM EASY GUI\n (BSD 3-Clause "
-                                            "License) \nTODO: git url \ndmhys@naver.com",
+                                            "License) \nhttps://github.com/dmhys/seg.git \ndmhys@naver.com",
                                             pfd::choice::ok, pfd::icon::info));
     }
 }
