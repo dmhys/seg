@@ -1,0 +1,22 @@
+BasedOnStyle: Google
+BinPackParameters: false
+
+# Include ordering
+# 1. Related header (auto by clang-format: main file header gets Priority 0)
+# 2. C system headers (<*.h>)
+# 3. C++ standard headers (<string>, <vector>, ...)
+# 4. External libraries (Eigen, OpenCV, ImGui, GLEW, GLFW, spdlog)
+# 5. Project headers ("seg/...")
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^"seg/.*'
+    Priority: 5
+  - Regex: '^<(Eigen|opencv2|spdlog)/'
+    Priority: 4
+  - Regex: '^<(GL|GLFW|imgui).*'
+    Priority: 4
+  - Regex: '^<.*\.h>'
+    Priority: 2
+  - Regex: '^<.*>'
+    Priority: 3

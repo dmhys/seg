@@ -7,14 +7,13 @@
 
 namespace seg {
 namespace ui {
-class FpsOverlay : public object::UIObject
-{
-   public:
-    FpsOverlay();
-    const std::string getType() const override { return "Fps Overlay"; }
+class FpsOverlay : public object::UIObject {
+ public:
+  FpsOverlay();
+  const std::string getType() const override { return "Fps Overlay"; }
 
-   private:
-    void drawImpl() override;
+ private:
+  void drawImpl() override;
 
 };  // class FpsOverlay
 }  // namespace ui

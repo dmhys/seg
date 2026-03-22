@@ -19,33 +19,33 @@ typedef unsigned int GLuint;
 
 namespace seg {
 namespace object {
-class Image : public UIObject
-{
-   public:
-    Image(std::string name);
+class Image : public UIObject {
+ public:
+  Image(std::string name);
 
-    void setData(void* image_buffer, ImageSize size, ImageType type);
+  void setData(void* image_buffer, ImageSize size, ImageType type);
 
-    const std::string getType() const override { return "Image"; }
+  const std::string getType() const override { return "Image"; }
 
-   private:
-    void drawImpl() override;
-    void updateTexture();
+ private:
+  void drawImpl() override;
+  void updateTexture();
 
-    std::string name;
+  std::string name;
 
-    std::mutex mtx;
-    std::atomic<bool> updated{false};
-    std::vector<unsigned char> buffer;  // TODO:
-    GLuint texture_id = 0;
-    int width;
-    int height;
+  std::mutex mtx;
+  std::atomic<bool> updated{false};
+  std::vector<unsigned char>
+      buffer;  // TODO: implement non-OpenCV image buffer path
+  GLuint texture_id = 0;
+  int width;
+  int height;
 
 #ifdef OPENCV
-   public:
-    void setData(cv::Mat&& image);
-    void setData(const cv::Mat& image);
-    cv::Mat image_buffer;
+ public:
+  void setData(cv::Mat&& image);
+  void setData(const cv::Mat& image);
+  cv::Mat image_buffer;
 #endif
 
 };  // class Image

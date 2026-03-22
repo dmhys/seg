@@ -1,8 +1,8 @@
 #include <iostream>
 #include <memory>
 #include <mutex>
+#include <stdexcept>
 
-#include "assert.h"
 #include "seg/core/app.h"
 #include "seg/core/config.h"
 #include "seg/gl/scene.h"
@@ -15,77 +15,84 @@
 #include "seg/ui/controller.h"
 #include "seg/utilities/logger.h"
 
-static std::once_flag instance_flag;
-static std::unique_ptr<seg::App> app;
-
+namespace {
+std::once_flag instance_flag;
+std::unique_ptr<seg::App> app;
 seg::object::ObjectManager* object_manager = nullptr;
 
+void ensureInitialized() {
+  if (object_manager == nullptr)
+    throw std::runtime_error("seg::initialize() must be called first");
+}
+}  // namespace
+
 namespace seg {
+namespace {
 // internal Functions ===================================================
-void createInstances()
-{
-    // note - ownership of each modules belong to App()
-    std::call_once(instance_flag, [] {
-        app.reset(new App());
-        object_manager = new object::ObjectManager();
+void createInstances() {
+  // note - ownership of each modules belong to App()
+  std::call_once(instance_flag, [] {
+    app.reset(new App());
+    object_manager = new object::ObjectManager();
 
-        app->setController(new ui::Controller());
-        app->setObjectManager(object_manager);
-        app->setScene(new gl::Scene());
-    });
+    app->setController(new ui::Controller());
+    app->setObjectManager(object_manager);
+    app->setScene(new gl::Scene());
+  });
 }
 
-void setOptions(Options options)
-{
+void setOptions(Options options) {
 #ifdef SPDLOG
-    spdlog::set_pattern("\033[1;94m[SEG]\033[0m[%t][%H:%M:%S][%^%l%$] %v");
+  spdlog::set_pattern("\033[1;94m[SEG]\033[0m[%t][%H:%M:%S][%^%l%$] %v");
 #endif
-    SET_LOGGER_LEVEL(options.verbosity);
+  SET_LOGGER_LEVEL(options.verbosity);
 
-    getConfig().theme = options.theme;
+  getConfig().theme = options.theme;
 }
 
-void initializeApp(const std::string& window_name, const WindowSize& window_size)
-{
-    LOG_INFO("Initializing . . .");
+void initializeApp(const std::string& window_name,
+                   const WindowSize& window_size) {
+  LOG_INFO("Initializing . . .");
 
-    app->initialize(window_name, window_size);
+  app->initialize(window_name, window_size);
 
-    LOG_INFO("Initialized!");
+  LOG_INFO("Initialized!");
 }
+}  // namespace
 
 // APIs =================================================================
-void initialize(const std::string& window_name, const WindowSize& window_size,
-                Options options)
-{
-    createInstances();
-    setOptions(options);
-    initializeApp(window_name, window_size);
+void initialize(const std::string& window_name,
+                const WindowSize& window_size,
+                Options options) {
+  createInstances();
+  setOptions(options);
+  initializeApp(window_name, window_size);
 }
 
-void addObject(const std::string& name, const std::shared_ptr<object::ObjectBase>& object)
-{
-    object_manager->addObject(name, object);
+void addObject(const std::string& name,
+               const std::shared_ptr<object::ObjectBase>& object) {
+  ensureInitialized();
+  object_manager->addObject(name, object);
 }
 
-void addObject(const std::string& name, object::ObjectBase* object)
-{
-    object_manager->addObject(name, object);
+void addObject(const std::string& name, object::ObjectBase* object) {
+  ensureInitialized();
+  object_manager->addObject(name, object);
 }
 
-std::string addObject(const std::shared_ptr<object::ObjectBase>& object)
-{
-    return object_manager->addObject(object);
+std::string addObject(const std::shared_ptr<object::ObjectBase>& object) {
+  ensureInitialized();
+  return object_manager->addObject(object);
 }
 
-std::string addObject(object::ObjectBase* object)
-{
-    return object_manager->addObject(object);
+std::string addObject(object::ObjectBase* object) {
+  ensureInitialized();
+  return object_manager->addObject(object);
 }
 
-bool deleteObject(const std::string & name)
-{
-    return object_manager->deleteObject(name);
+bool deleteObject(const std::string& name) {
+  ensureInitialized();
+  return object_manager->deleteObject(name);
 }
 
 }  // namespace seg

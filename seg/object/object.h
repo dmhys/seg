@@ -14,7 +14,7 @@ namespace object {
 class ObjectBase;
 class GLObject;
 
-typedef StaticMeshRenderer Mesh; // mesh is usually static.
+typedef StaticMeshRenderer Mesh;  // mesh is usually static.
 
 typedef StaticLineRenderer StaticLine;
 typedef StaticPointcloudRenderer StaticPointcloud;

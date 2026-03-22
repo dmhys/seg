@@ -7,15 +7,14 @@
 
 namespace seg {
 namespace ui {
-class ObjectInspectorWindow : public object::UIObject
-{
-   public:
-    ObjectInspectorWindow();
+class ObjectInspectorWindow : public object::UIObject {
+ public:
+  ObjectInspectorWindow();
 
-    const std::string getType() const override { return "Object List Window"; }
+  const std::string getType() const override { return "Object List Window"; }
 
-   private:
-    void drawImpl() override;
+ private:
+  void drawImpl() override;
 
 };  // class ObjectInspectorWindow
 }  // namespace ui

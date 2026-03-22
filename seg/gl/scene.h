@@ -12,24 +12,23 @@ class GLFWwindow;
 
 namespace seg {
 namespace gl {
-class Scene
-{
-   public:
-    void init(GLFWwindow* window);
-    void draw();
+class Scene {
+ public:
+  void init(GLFWwindow* window);
+  void draw();
 
-    void clearObjects();
+  void clearObjects();
 
-    void onScreenResize(int width, int height);
+  void onScreenResize(int width, int height);
 
-    Camera camera;
-    Shader shader;
+  Camera camera;
+  Shader shader;
 
-   private:
-    void clear();
-    void updateVpMatrix();
+ private:
+  void clear();
+  void updateVpMatrix();
 
-    std::vector<std::unique_ptr<object::GLObject>> base_objects;
+  std::vector<std::unique_ptr<object::GLObject>> base_objects;
 
 };  // class Scene
 }  // namespace gl

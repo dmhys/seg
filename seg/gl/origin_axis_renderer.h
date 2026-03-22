@@ -7,15 +7,14 @@ typedef unsigned int GLuint;
 
 namespace seg {
 namespace gl {
-class OriginAxisRenderer : public object::GLObject
-{
-   public:
-    OriginAxisRenderer();
-    ~OriginAxisRenderer();
-    const std::string getType() const override { return "Origin Axis"; }
+class OriginAxisRenderer : public object::GLObject {
+ public:
+  OriginAxisRenderer();
+  ~OriginAxisRenderer();
+  const std::string getType() const override { return "Origin Axis"; }
 
-   protected:
-    void drawImpl() override;
+ protected:
+  void drawImpl() override;
 
 };  // class OriginAxisRenderer
 }  // namespace gl

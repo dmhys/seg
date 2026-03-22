@@ -10,28 +10,26 @@
 
 namespace seg {
 namespace ui {
-class MainMenu : public object::UIObject
-{
-   public:
-    MainMenu(bool* _show_object_list, bool* _show_object_inspector)
-        : show_object_list(_show_object_list), show_object_inspector(_show_object_inspector)
-    {
-    }
-    ~MainMenu();
-    const std::string getType() const override { return "Main Menu"; }
+class MainMenu : public object::UIObject {
+ public:
+  MainMenu(bool* _show_object_list, bool* _show_object_inspector)
+      : show_object_list(_show_object_list),
+        show_object_inspector(_show_object_inspector) {}
+  ~MainMenu();
+  const std::string getType() const override { return "Main Menu"; }
 
-   private:
-    void drawImpl() override;
+ private:
+  void drawImpl() override;
 
-    void fileMenu();
-    void visualizeMenu();
-    void windowMenu();
-    void about();
+  void fileMenu();
+  void visualizeMenu();
+  void windowMenu();
+  void about();
 
-    bool* show_object_list;
-    bool* show_object_inspector;
+  bool* show_object_list;
+  bool* show_object_inspector;
 
-    std::unique_ptr<pfd::message> about_window;
+  std::unique_ptr<pfd::message> about_window;
 
 };  // class MainMenu
 }  // namespace ui

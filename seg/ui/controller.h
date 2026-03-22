@@ -15,19 +15,18 @@ class ObjectManager;
 };
 
 namespace ui {
-class Controller
-{
-   public:
-    void init(gl::Scene* scene, object::ObjectManager* object_manager);
-    void drawUI();
+class Controller {
+ public:
+  void init(gl::Scene* scene, object::ObjectManager* object_manager);
+  void drawUI();
 
-   private:
-    void handleMouseEvents();
+ private:
+  void handleMouseEvents();
 
-    gl::Scene* scene;
-    object::ObjectManager* object_manager;
+  gl::Scene* scene;
+  object::ObjectManager* object_manager;
 
-    std::vector<std::unique_ptr<object::UIObject>> base_objects;
+  std::vector<std::unique_ptr<object::UIObject>> base_objects;
 
 };  // class Controller
 }  // namespace ui

@@ -11,17 +11,16 @@ class ObjectManager;
 };
 
 namespace ui {
-class ObjectListWindow : public object::UIObject
-{
-   public:
-    ObjectListWindow(object::ObjectManager* object_manager);
+class ObjectListWindow : public object::UIObject {
+ public:
+  ObjectListWindow(object::ObjectManager* object_manager);
 
-    const std::string getType() const override { return "Object List Window"; }
+  const std::string getType() const override { return "Object List Window"; }
 
-   private:
-    void drawImpl() override;
+ private:
+  void drawImpl() override;
 
-    object::ObjectManager* object_manager;
+  object::ObjectManager* object_manager;
 
 };  // class ObjectListWindow
 }  // namespace ui

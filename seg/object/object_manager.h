@@ -18,33 +18,34 @@ class ObjectListWindow;
 namespace object {
 class ObjectBase;
 
-class ObjectManager
-{
-   public:
-    void onCoreShutdown();
+class ObjectManager {
+ public:
+  void onCoreShutdown();
 
-    void setScene(gl::Scene* _scene) { scene = _scene; }
+  void setScene(gl::Scene* _scene) { scene = _scene; }
 
-    std::string addObject(ObjectBase * obj);
-    std::string addObject(const std::shared_ptr<ObjectBase> & obj);
-    void addObject(const std::string& name, ObjectBase* obj);
-    void addObject(const std::string& name, const std::shared_ptr<ObjectBase>& obj);
-    ObjectBase* getObject(const std::string& name);
+  std::string addObject(ObjectBase* obj);
+  std::string addObject(const std::shared_ptr<ObjectBase>& obj);
+  void addObject(const std::string& name, ObjectBase* obj);
+  void addObject(const std::string& name,
+                 const std::shared_ptr<ObjectBase>& obj);
+  ObjectBase* getObject(const std::string& name);
 
-    bool deleteObject(const std::string& name);
-    void clearObjects();
+  bool deleteObject(const std::string& name);
+  void clearObjects();
 
-    void draw();
+  void draw();
 
-   private:
-    std::string makeObjectName(object::ObjectBase* object);
+ private:
+  std::string makeObjectName(object::ObjectBase* object);
 
-    friend class ui::ObjectListWindow;
-    gl::Scene* scene;
-    std::mutex mtx_object;
-    std::map<std::string, std::shared_ptr<ObjectBase>> objects;
+  friend class ui::ObjectListWindow;
+  gl::Scene* scene;
+  std::mutex mtx_object;
+  std::map<std::string, std::shared_ptr<ObjectBase>> objects;
 
-    std::vector<std::shared_ptr<ObjectBase>> objects_to_delete;  // To Delete in gl thread;
+  std::vector<std::shared_ptr<ObjectBase>>
+      objects_to_delete;  // To Delete in gl thread;
 
 };  // class ObjectManager
 }  // namespace object

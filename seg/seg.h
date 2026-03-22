@@ -21,16 +21,20 @@ class ObjectBase;
  *        Calling this Function will run SEG thread imediately.
  */
 void initialize(const std::string& window_name = "",
-                const WindowSize& window_size = WindowSize(960, 480), Options options = Options());
+                const WindowSize& window_size = WindowSize(960, 480),
+                Options options = Options());
 
 /**
  * @brief Adds object to SEG.
  *        This Objects will be managed inside SEG.
- * @param name name to be displayed. If not given, SEG will generate one for you.
+ * @param name name to be displayed. If not given, SEG will generate one for
+ * you.
  * @param object Raw or shared ptr of class derived from ObjectBase.
- *               Shared_ptr is recommended when you want to access it thereafter.
+ *               Shared_ptr is recommended when you want to access it
+ * thereafter.
  */
-void addObject(const std::string& name, const std::shared_ptr<object::ObjectBase>& object);
+void addObject(const std::string& name,
+               const std::shared_ptr<object::ObjectBase>& object);
 
 /** @overload
  */

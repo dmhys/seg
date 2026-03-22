@@ -6,14 +6,12 @@ namespace seg {
 namespace object {
 GLObject::GLObject() {}
 
-// This allows forward declaration of GeneralRenderer in header files. 
+// This allows forward declaration of GeneralRenderer in header files.
 // Do not remove.
-GLObject::~GLObject() {} 
+GLObject::~GLObject() {}
 
-void GLObject::glFree()
-{
-    if(pimpl)
-        pimpl->glFree();
+void GLObject::glFree() {
+  if (pimpl) pimpl->glFree();
 }
 
 }  // namespace object

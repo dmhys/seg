@@ -8,11 +8,10 @@ static std::unique_ptr<seg::core::Config> config;
 
 namespace seg {
 namespace core {
-Config& Config::getInstance()
-{
-    std::call_once(instance_flag, [] { config.reset(new Config()); });
+Config& Config::getInstance() {
+  std::call_once(instance_flag, [] { config.reset(new Config()); });
 
-    return *(config.get());
+  return *(config.get());
 }
 
 }  // namespace core

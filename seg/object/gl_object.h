@@ -2,6 +2,7 @@
 #define SEG_OBJECT_GL_OBJECT_H
 
 #include <memory>
+
 #include <Eigen/Dense>
 
 #include "seg/object/object_base.h"
@@ -13,22 +14,22 @@ class GeneralRenderer;
 }  // namespace gl
 
 namespace object {
-class GLObject : public ObjectBase
-{
-   public:
-    GLObject();
-    virtual ~GLObject();
+class GLObject : public ObjectBase {
+ public:
+  GLObject();
+  virtual ~GLObject();
 
-    virtual void glFree();
-    virtual void setShader(gl::Shader* _shader) { shader = _shader; }
-    
-    ObjectLayer getObjectLayer() override { return ObjectLayer::GL; }
+  virtual void glFree();
+  virtual void setShader(gl::Shader* _shader) { shader = _shader; }
 
-   protected:
-    gl::Shader* shader;  // TODO: derived classes shader null check
-    Eigen::Matrix4f model_matrix = Eigen::Matrix4f::Identity();
+  ObjectLayer getObjectLayer() const override { return ObjectLayer::GL; }
 
-    std::unique_ptr<gl::GeneralRenderer> pimpl;
+ protected:
+  gl::Shader*
+      shader;  // TODO: add null check before shader use in derived classes
+  Eigen::Matrix4f model_matrix = Eigen::Matrix4f::Identity();
+
+  std::unique_ptr<gl::GeneralRenderer> pimpl;
 
 };  // class GLObject
 }  // namespace object
