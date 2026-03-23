@@ -3,7 +3,7 @@ add_executable(hello
 )
 
 target_link_libraries(hello
-    seg
+    seg::seg
 )
 
 add_executable(multi_thread
@@ -11,6 +11,5 @@ add_executable(multi_thread
 )
 
 target_link_libraries(multi_thread
-    seg
-    pthread
+    seg::seg
 )

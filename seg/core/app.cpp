@@ -18,6 +18,7 @@
 #include "seg/object/object_manager.h"
 #include "seg/types.h"
 #include "seg/ui/controller.h"
+#include "seg/resources/roboto_regular.h"
 #include "seg/utilities/logger.h"
 
 namespace {
@@ -83,7 +84,8 @@ void App::windowSetup(const std::string& window_name,
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-  io.Fonts->AddFontDefault();
+  io.Fonts->AddFontFromMemoryCompressedTTF(
+      RobotoRegular_compressed_data, RobotoRegular_compressed_size, 16.0f);
   if (getConfig().theme == Theme::LIGHT)
     ImGui::StyleColorsLight();
   else

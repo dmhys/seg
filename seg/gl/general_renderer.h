@@ -40,8 +40,8 @@ class GeneralRenderer {
 
   void draw(Shader* shader);
 
-  bool hasColor() const { return has_valid_color; }
-  bool hasScalar() const { return has_valid_scalar; }
+  const bool& hasColor() const { return has_valid_color; }
+  const bool& hasScalar() const { return has_valid_scalar; }
 
   const size_t& vertexCount() const { return vertex_count; }
 

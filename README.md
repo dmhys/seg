@@ -34,13 +34,15 @@ For more details, check SEG/examples.
 
 **Formatting**
 
-SEG uses Clang formatter, based on Google Format, but with slight modifications.
-
-- IndentWidth: 4
-
-- BreakBeforeBraces: BS_Mozilla
-
+SEG uses clang-format with Google style. See `.clang-format`.
 
 
 
 ### TODOs
+
+- [ ] Shutdown guard: API calls after window close cause segfault (addObject on dead render thread)
+- [ ] Wide line rendering: `glLineWidth` >1.0 unsupported on core profile. Need geometry shader or quad-based line
+- [x] Embed default font as header (Roboto Regular, compressed in `seg/resources/roboto_regular.h`)
+- [ ] Line/Pointcloud renderer deduplication (F6)
+- [ ] Shader API consistency: some renderers use raw uniform strings instead of helpers (F7)
+- [ ] `install()` target and interface library for downstream consumers
