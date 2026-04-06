@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_GL_OBJECT_H
-#define SEG_OBJECT_GL_OBJECT_H
+#pragma once
 
 #include <memory>
 
@@ -25,8 +24,7 @@ class GLObject : public ObjectBase {
   ObjectLayer getObjectLayer() const override { return ObjectLayer::GL; }
 
  protected:
-  gl::Shader*
-      shader;  // TODO: add null check before shader use in derived classes
+  gl::Shader* shader = nullptr;
   Eigen::Matrix4f model_matrix = Eigen::Matrix4f::Identity();
 
   std::unique_ptr<gl::GeneralRenderer> pimpl;
@@ -34,5 +32,3 @@ class GLObject : public ObjectBase {
 };  // class GLObject
 }  // namespace object
 }  // namespace seg
-
-#endif

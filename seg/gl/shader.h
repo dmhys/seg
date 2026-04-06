@@ -1,5 +1,4 @@
-#ifndef SEG_GL_SHADER_H
-#define SEG_GL_SHADER_H
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -10,6 +9,9 @@
 
 namespace seg {
 namespace gl {
+
+enum class ShaderType { GENERAL, GRID };
+
 enum class ColorMode {
   UNIFORM = 0,
   RGB = 1,
@@ -21,7 +23,7 @@ enum class ColorMode {
 class Shader {
  public:
   Shader(){};
-  void init();
+  void init(ShaderType type);
   void bind();
   void unbind();
 
@@ -60,10 +62,10 @@ class Shader {
   }
 
  private:
-  void attatchShader();
+  void attatchShader(const std::string& vert_src, const std::string& frag_src);
   void setDefaultSettings();
 
-  GLuint program;
+  GLuint program = 0;
   std::unordered_map<std::string, GLint> uniform_id_cache;
   std::unordered_map<std::string, GLint> attrib_id_cache;
 
@@ -73,5 +75,3 @@ class Shader {
 const char* enumToCharP(gl::ColorMode mode);
 
 }  // namespace seg
-
-#endif

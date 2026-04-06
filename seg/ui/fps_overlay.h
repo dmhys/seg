@@ -1,5 +1,4 @@
-#ifndef SEG_UI_FPS_OVERLAY_H
-#define SEG_UI_FPS_OVERLAY_H
+#pragma once
 
 #include <string>
 
@@ -10,6 +9,8 @@ namespace ui {
 class FpsOverlay : public object::UIObject {
  public:
   FpsOverlay();
+  FpsOverlay(const FpsOverlay&) = delete;
+  FpsOverlay& operator=(const FpsOverlay&) = delete;
   const std::string getType() const override { return "Fps Overlay"; }
 
  private:
@@ -18,5 +19,3 @@ class FpsOverlay : public object::UIObject {
 };  // class FpsOverlay
 }  // namespace ui
 }  // namespace seg
-
-#endif

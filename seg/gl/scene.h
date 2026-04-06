@@ -1,5 +1,4 @@
-#ifndef SEG_GL_SCENE_H
-#define SEG_GL_SCENE_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -22,7 +21,8 @@ class Scene {
   void onScreenResize(int width, int height);
 
   Camera camera;
-  Shader shader;
+  Shader general_shader;
+  Shader grid_shader;
 
  private:
   void clear();
@@ -33,5 +33,3 @@ class Scene {
 };  // class Scene
 }  // namespace gl
 }  // namespace seg
-
-#endif

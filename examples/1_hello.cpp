@@ -45,10 +45,7 @@ int main() {
       new segobj::StaticPointcloud(segobj::primitives::GaussianRandomVertices(
           3000, Eigen::Vector3f{0, 10, 0}, 1)));
 
-  // wait for user intput to terminate.
-  // closing SEG window will not affect main thread.
-  // However, killing main thread will cause SEG to shutdown.
-  std::cin.ignore();
+  seg::waitUntilClosed();
 
   return 0;
 }

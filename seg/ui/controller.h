@@ -1,10 +1,10 @@
-#ifndef SEG_UI_CONTROLLER_H
-#define SEG_UI_CONTROLLER_H
+#pragma once
 
 #include <memory>
 #include <vector>
 
 #include "seg/object/ui_object.h"
+#include "seg/types.h"
 
 namespace seg {
 namespace gl {
@@ -17,8 +17,15 @@ class ObjectManager;
 namespace ui {
 class Controller {
  public:
+  Controller() = default;
+  Controller(const Controller&) = delete;
+  Controller& operator=(const Controller&) = delete;
+
   void init(gl::Scene* scene, object::ObjectManager* object_manager);
   void drawUI();
+
+  Position viewport_pos;
+  WindowSize viewport_size;
 
  private:
   void handleMouseEvents();
@@ -31,5 +38,3 @@ class Controller {
 };  // class Controller
 }  // namespace ui
 }  // namespace seg
-
-#endif

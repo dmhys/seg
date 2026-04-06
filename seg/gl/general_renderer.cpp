@@ -150,11 +150,10 @@ void GeneralRenderer::setData(std::vector<Eigen::Vector3f>&& vertices,
       valid_index = false;
       LOG_FATAL("Renderer - Invalid index array!");
       throw std::invalid_argument("Invalid index array given!");
-      break;
     }
   }
 
-  if (valid_index) tmp_indices = move(indices);
+  if (valid_index) tmp_indices = std::move(indices);
 
   updated.store(true);
 }

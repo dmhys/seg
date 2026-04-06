@@ -1,11 +1,11 @@
-#include "seg/object/object_manager.h"
+#include "seg/core/object_manager.h"
 
 #include <memory>
 #include <mutex>
 #include <string>
 #include <unordered_map>
 
-#include "seg/gl/scene.h"
+#include "seg/gl/shader.h"
 #include "seg/object/gl_object.h"
 #include "seg/object/object_base.h"
 #include "seg/utilities/logger.h"
@@ -13,11 +13,12 @@
 namespace seg {
 namespace object {
 void ObjectManager::onCoreShutdown() {
-  // no need to lock
+  std::lock_guard<std::mutex> lock(mtx_object);
+  shut_down = true;
+
   for (auto&& object_iter : objects) {
     auto&& object = object_iter.second;
     if (object->getObjectLayer() != ObjectLayer::GL) continue;
-
     static_cast<GLObject*>(object.get())->glFree();
   }
 }
@@ -41,6 +42,7 @@ void ObjectManager::addObject(const std::string& name, ObjectBase* obj) {
 void ObjectManager::addObject(const std::string& name,
                               const std::shared_ptr<ObjectBase>& obj) {
   std::lock_guard<std::mutex> lock(mtx_object);
+  if (shut_down) return;
 
   if (objects.find(name) != objects.end()) {
     LOG_WARN("objectManager - [{}] already exists !", name);
@@ -48,12 +50,12 @@ void ObjectManager::addObject(const std::string& name,
     return;
   }
 
-  if (obj->getObjectLayer() == ObjectLayer::GL)
-    static_cast<GLObject*>(obj.get())->setShader(&(scene->shader));
+  if (obj->getObjectLayer() == ObjectLayer::GL && shader)
+    static_cast<GLObject*>(obj.get())->setShader(shader);
 
   objects[name] = obj;
 
-  LOG_INFO("Object '{}({})' added.", name, obj->getType(), objects.size());
+  LOG_INFO("Object '{}({})' added. Total: {}", name, obj->getType(), objects.size());
 }
 
 ObjectBase* ObjectManager::getObject(const std::string& name) {
@@ -67,6 +69,7 @@ ObjectBase* ObjectManager::getObject(const std::string& name) {
 
 bool ObjectManager::deleteObject(const std::string& name) {
   std::lock_guard<std::mutex> lock(mtx_object);
+  if (shut_down) return false;
 
   auto obj_iter = objects.find(name);
   if (obj_iter == objects.end()) return false;
@@ -94,13 +97,9 @@ void ObjectManager::draw() {
   }
   objects_to_delete.clear();
 
-  scene->shader.bind();
-
   std::lock_guard<std::mutex> lock(mtx_object);
 
   for (const auto& object : objects) object.second->draw();
-
-  scene->shader.unbind();
 }
 
 std::string ObjectManager::makeObjectName(object::ObjectBase* obj) {

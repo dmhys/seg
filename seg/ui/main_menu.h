@@ -1,5 +1,4 @@
-#ifndef SEG_UI_MAIN_MENU_H
-#define SEG_UI_MAIN_MENU_H
+#pragma once
 
 #include <portable-file-dialogs.h>
 
@@ -12,6 +11,8 @@ namespace seg {
 namespace ui {
 class MainMenu : public object::UIObject {
  public:
+  MainMenu(const MainMenu&) = delete;
+  MainMenu& operator=(const MainMenu&) = delete;
   MainMenu(bool* _show_object_list, bool* _show_object_inspector)
       : show_object_list(_show_object_list),
         show_object_inspector(_show_object_inspector) {}
@@ -34,5 +35,3 @@ class MainMenu : public object::UIObject {
 };  // class MainMenu
 }  // namespace ui
 }  // namespace seg
-
-#endif

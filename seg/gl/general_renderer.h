@@ -1,5 +1,4 @@
-#ifndef SEG_GL_GENERAL_RENDERER_H
-#define SEG_GL_GENERAL_RENDERER_H
+#pragma once
 
 #include <atomic>
 #include <memory>
@@ -50,8 +49,8 @@ class GeneralRenderer {
 
   const BufferType buffer_type;
   const RenderTarget render_target;
-  size_t vertex_count;
-  size_t index_count;
+  size_t vertex_count = 0;
+  size_t index_count = 0;
 
   std::atomic<bool> updated{false};
   std::mutex mtx;
@@ -89,5 +88,3 @@ class GeneralRenderer {
 };  // class GeneralRenderer
 }  // namespace gl
 }  // namespace seg
-
-#endif

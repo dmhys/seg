@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_PATH_H
-#define SEG_OBJECT_PATH_H
+#pragma once
 
 #include <mutex>
 #include <vector>
@@ -75,5 +74,3 @@ class Path : public GLObject {
 const char* enumToCharP(object::Path::VisualType type);
 
 }  // namespace seg
-
-#endif

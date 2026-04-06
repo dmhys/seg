@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_PRIMITIVES_H
-#define SEG_OBJECT_PRIMITIVES_H
+#pragma once
 
 #include <tuple>
 #include <vector>
@@ -127,5 +126,3 @@ struct primitives {
 };  // struct primitives
 }  // namespace object
 }  // namespace seg
-
-#endif

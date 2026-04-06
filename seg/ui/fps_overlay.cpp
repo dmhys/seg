@@ -26,12 +26,6 @@ void FpsOverlay::drawImpl() {
   ImVec2 work_size = viewport->WorkSize;
   ImVec2 window_pos, window_pos_pivot;
 
-  // upper left
-  // window_pos.x = (work_pos.x + padding);
-  // window_pos.y = (work_pos.y + padding);
-  // window_pos_pivot.x = 0.0f;
-  // window_pos_pivot.y = 0.0f;
-
   // upper right
   window_pos.x = (work_pos.x + work_size.x - padding);
   window_pos.y = (work_pos.y + padding);

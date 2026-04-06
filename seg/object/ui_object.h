@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_UI_OBJECT_H
-#define SEG_OBJECT_UI_OBJECT_H
+#pragma once
 
 #include "seg/object/object_base.h"
 
@@ -18,5 +17,3 @@ class UIObject : public ObjectBase {
 
 }  // namespace object
 }  // namespace seg
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_IMAGE_H
-#define SEG_OBJECT_IMAGE_H
+#pragma once
 
 #include <atomic>
 #include <mutex>
@@ -38,8 +37,8 @@ class Image : public UIObject {
   std::vector<unsigned char>
       buffer;  // TODO: implement non-OpenCV image buffer path
   GLuint texture_id = 0;
-  int width;
-  int height;
+  int width = 0;
+  int height = 0;
 
 #ifdef OPENCV
  public:
@@ -51,5 +50,3 @@ class Image : public UIObject {
 };  // class Image
 }  // namespace object
 }  // namespace seg
-
-#endif

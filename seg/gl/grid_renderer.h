@@ -1,5 +1,4 @@
-#ifndef SEG_GL_GRID_RENDERER_H
-#define SEG_GL_GRID_RENDERER_H
+#pragma once
 
 #include "seg/object/gl_object.h"
 #include "seg/types.h"
@@ -14,22 +13,14 @@ class GridRenderer : public object::GLObject {
   ~GridRenderer();
   const std::string getType() const override { return "Grid"; }
 
- protected:
+ private:
   void drawImpl() override;
-  void findLod();
 
-  RGBA color = RGBA(0.5f, 0.5f, 0.5f, 0.3f);
-  const float line_width_thin = 0.5f;
-  const float line_width_thick = 2.0f;
-
-  unsigned int lod = 0;
+  RGBA grid_color = RGBA(0.5f, 0.5f, 0.5f, 0.5f);
+  float fade_distance = 200.0f;
 
   GLuint vao = 0;
-  GLuint vbo[4];  // 0 - 100m, 1-20m, 2-5m, 3-1m;
-  unsigned int vertex_count[4];
 
 };  // class GridRenderer
 }  // namespace gl
 }  // namespace seg
-
-#endif

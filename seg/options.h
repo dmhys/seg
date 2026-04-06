@@ -1,5 +1,4 @@
-#ifndef SEG_OPTIONS_H
-#define SEG_OPTIONS_H
+#pragma once
 
 #include "seg/types.h"
 
@@ -33,5 +32,3 @@ struct Options {
 };
 
 }  // namespace seg
-
-#endif

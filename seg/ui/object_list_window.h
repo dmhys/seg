@@ -1,5 +1,4 @@
-#ifndef SEG_UI_OBJECT_LIST_WINDOW_H
-#define SEG_UI_OBJECT_LIST_WINDOW_H
+#pragma once
 
 #include <string>
 
@@ -14,6 +13,8 @@ namespace ui {
 class ObjectListWindow : public object::UIObject {
  public:
   ObjectListWindow(object::ObjectManager* object_manager);
+  ObjectListWindow(const ObjectListWindow&) = delete;
+  ObjectListWindow& operator=(const ObjectListWindow&) = delete;
 
   const std::string getType() const override { return "Object List Window"; }
 
@@ -25,5 +26,3 @@ class ObjectListWindow : public object::UIObject {
 };  // class ObjectListWindow
 }  // namespace ui
 }  // namespace seg
-
-#endif

@@ -8,21 +8,12 @@
 #include "seg/gl/grid_renderer.h"
 #include "seg/utilities/logger.h"
 
-namespace {
-seg::gl::Camera* cam_ptr;
-seg::gl::Scene* scene_ptr;
-
-void windowResizeCb(GLFWwindow* window, int width, int height) {
-  cam_ptr->onScreenResize(width, height);
-  scene_ptr->onScreenResize(width, height);
-}
-}  // namespace
-
 namespace seg {
 namespace gl {
 void Scene::init(GLFWwindow* window) {
-  // shader
-  shader.init();
+  // shaders
+  general_shader.init(ShaderType::GENERAL);
+  grid_shader.init(ShaderType::GRID);
 
   // camera
   int width, height;
@@ -32,27 +23,25 @@ void Scene::init(GLFWwindow* window) {
   // gl
   glViewport(0, 0, width, height);
 
-  // Callbacks
-  cam_ptr = &camera;
-  scene_ptr = this;
-  glfwSetWindowSizeCallback(window, windowResizeCb);
+  // Callbacks — use GLFW user pointer instead of global statics
+  glfwSetWindowUserPointer(window, this);
+  glfwSetWindowSizeCallback(window, [](GLFWwindow* w, int width, int height) {
+    auto* scene = static_cast<Scene*>(glfwGetWindowUserPointer(w));
+    scene->camera.onScreenResize(width, height);
+    scene->onScreenResize(width, height);
+  });
 
   // base object - grid
   auto grid_renderer = new GridRenderer();
-  grid_renderer->setShader(&shader);
+  grid_renderer->setShader(&grid_shader);
   base_objects.emplace_back(std::unique_ptr<GridRenderer>(grid_renderer));
 }
 
 void Scene::draw() {
   clear();
-
-  shader.bind();
-
   updateVpMatrix();
 
   for (auto& object_ptr : base_objects) object_ptr->draw();
-
-  shader.unbind();
 }
 
 void Scene::clearObjects() { base_objects.clear(); }
@@ -70,7 +59,14 @@ void Scene::clear() {
 void Scene::updateVpMatrix() {
   Eigen::Matrix4f vp_matrix =
       camera.getProjectionMatrix() * camera.getViewMatrix();
-  shader.setUniform("vp_matrix", vp_matrix);
+
+  general_shader.bind();
+  general_shader.setUniform("vp_matrix", vp_matrix);
+
+  Eigen::Matrix4f inv_vp_matrix = vp_matrix.inverse();
+  grid_shader.bind();
+  grid_shader.setUniform("vp_matrix", vp_matrix);
+  grid_shader.setUniform("inv_vp_matrix", inv_vp_matrix);
 }
 
 }  // namespace gl

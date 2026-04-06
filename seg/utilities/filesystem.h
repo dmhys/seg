@@ -1,5 +1,4 @@
-#ifndef SEG_UITILITES_FILESYSTEM_H
-#define SEG_UITILITES_FILESYSTEM_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -10,5 +9,3 @@ namespace seg {
 std::vector<std::string> getFileList(const std::string &directory,
                                      std::string extension = "");
 }
-
-#endif

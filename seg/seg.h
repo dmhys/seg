@@ -1,5 +1,4 @@
-#ifndef SEG_SEG_H
-#define SEG_SEG_H
+#pragma once
 
 #define SEG_VERSION_MAJOR 0
 #define SEG_VERSION_MINOR 1
@@ -56,6 +55,9 @@ std::string addObject(object::ObjectBase* object);
  */
 bool deleteObject(const std::string& name);
 
-}  // namespace seg
+/**
+ * @brief Blocks until the SEG window is closed.
+ */
+void waitUntilClosed();
 
-#endif
+}  // namespace seg

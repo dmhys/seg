@@ -60,6 +60,7 @@ void StaticPointcloudRenderer::drawImpl() {
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
 
+  shader->bind();
   shader->setModelMatrix(model_matrix);
   shader->setColorMode(color_mode);
   shader->setUniform("uniform_color", color.asEigenVector4f());

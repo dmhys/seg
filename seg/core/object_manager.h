@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_OBJECT_MANAGER_H
-#define SEG_OBJECT_OBJECT_MANAGER_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -9,7 +8,7 @@
 
 namespace seg {
 namespace gl {
-class Scene;
+class Shader;
 };
 namespace ui {
 class ObjectListWindow;
@@ -22,7 +21,7 @@ class ObjectManager {
  public:
   void onCoreShutdown();
 
-  void setScene(gl::Scene* _scene) { scene = _scene; }
+  void setShader(gl::Shader* _shader) { shader = _shader; }
 
   std::string addObject(ObjectBase* obj);
   std::string addObject(const std::shared_ptr<ObjectBase>& obj);
@@ -40,8 +39,9 @@ class ObjectManager {
   std::string makeObjectName(object::ObjectBase* object);
 
   friend class ui::ObjectListWindow;
-  gl::Scene* scene;
+  gl::Shader* shader = nullptr;
   std::mutex mtx_object;
+  bool shut_down = false;
   std::map<std::string, std::shared_ptr<ObjectBase>> objects;
 
   std::vector<std::shared_ptr<ObjectBase>>
@@ -50,5 +50,3 @@ class ObjectManager {
 };  // class ObjectManager
 }  // namespace object
 }  // namespace seg
-
-#endif

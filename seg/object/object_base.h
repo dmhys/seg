@@ -1,14 +1,13 @@
-#ifndef SEG_OBJECT_OBJECT_BASE_H
-#define SEG_OBJECT_OBJECT_BASE_H
+#pragma once
 
 #include <memory>
 #include <string>
 
-// default dtor of ObjectBase class need to know size of general inspector,
-// therefore forbiding forward declation of GeneralInspector class.
-#include "seg/ui/general_inspector.h"
-
 namespace seg {
+namespace ui {
+class GeneralInspector;
+}
+
 namespace object {
 enum ObjectLayer {
   GL,
@@ -17,8 +16,8 @@ enum ObjectLayer {
 
 class ObjectBase {
  public:
-  ObjectBase() {}
-  virtual ~ObjectBase() {}
+  ObjectBase();
+  virtual ~ObjectBase();
   void draw() {
     if (is_visible) drawImpl();
   }
@@ -38,5 +37,3 @@ class ObjectBase {
 };  // class ObjectBase
 }  // namespace object
 }  // namespace seg
-
-#endif

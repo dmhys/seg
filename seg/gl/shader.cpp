@@ -10,13 +10,33 @@
 #include "seg/utilities/logger.h"
 
 namespace {
-const std::string frag_shader_code =
-#include "seg/gl/shader/shader.frag"
-    ;
-
-const std::string vert_shader_code =
+const std::string general_vert =
 #include "seg/gl/shader/shader.vert"
     ;
+const std::string general_frag =
+#include "seg/gl/shader/shader.frag"
+    ;
+const std::string grid_vert =
+#include "seg/gl/shader/grid.vert"
+    ;
+const std::string grid_frag =
+#include "seg/gl/shader/grid.frag"
+    ;
+
+struct ShaderSource {
+  const std::string& vert;
+  const std::string& frag;
+};
+
+ShaderSource getSource(seg::gl::ShaderType type) {
+  switch (type) {
+    case seg::gl::ShaderType::GRID:
+      return {grid_vert, grid_frag};
+    case seg::gl::ShaderType::GENERAL:
+    default:
+      return {general_vert, general_frag};
+  }
+}
 }  // namespace
 
 namespace seg {
@@ -26,12 +46,14 @@ const char *modes[] = {"Uniform", "RGB", "RGBA", "Scalar", "Z-Axis"};
 }
 
 namespace gl {
-void Shader::init() {
-  attatchShader();
-  setDefaultSettings();
+void Shader::init(ShaderType type) {
+  auto src = getSource(type);
+  attatchShader(src.vert, src.frag);
+  if (type == ShaderType::GENERAL) setDefaultSettings();
 }
 
-void Shader::attatchShader() {
+void Shader::attatchShader(const std::string& vert_src,
+                           const std::string& frag_src) {
   // create shader & gl program
   GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
   GLuint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -41,7 +63,7 @@ void Shader::attatchShader() {
   int err_len;
 
   // compile vertex shader
-  const char *vshader_cstr = vert_shader_code.c_str();
+  const char *vshader_cstr = vert_src.c_str();
   glShaderSource(vert_shader, 1, &vshader_cstr, nullptr);
   glCompileShader(vert_shader);
   glGetShaderiv(vert_shader, GL_COMPILE_STATUS, &result);
@@ -54,7 +76,7 @@ void Shader::attatchShader() {
   }
 
   // compile fragment shader
-  const char *fshader_cstr = frag_shader_code.c_str();
+  const char *fshader_cstr = frag_src.c_str();
   glShaderSource(frag_shader, 1, &fshader_cstr, nullptr);
   glCompileShader(frag_shader);
   glGetShaderiv(frag_shader, GL_COMPILE_STATUS, &result);
@@ -121,7 +143,7 @@ GLint Shader::getAttribId(const std::string &name) {
   if (id == -1)
     LOG_WARN("shader - GL Attrib object [{}] can't be found.", name);
   else
-    uniform_id_cache[name] = id;
+    attrib_id_cache[name] = id;
 
   return id;
 }

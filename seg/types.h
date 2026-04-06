@@ -1,5 +1,4 @@
-#ifndef SEG_TYPES_H
-#define SEG_TYPES_H
+#pragma once
 
 #include <Eigen/Dense>
 
@@ -55,5 +54,3 @@ enum class ImageType {
 };
 
 }  // namespace seg
-
-#endif

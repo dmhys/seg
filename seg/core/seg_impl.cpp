@@ -7,7 +7,7 @@
 #include "seg/core/config.h"
 #include "seg/gl/scene.h"
 #include "seg/object/gl/basic_renderers.h"
-#include "seg/object/object_manager.h"
+#include "seg/core/object_manager.h"
 #include "seg/object/primitives.h"
 #include "seg/options.h"
 #include "seg/seg.h"
@@ -24,6 +24,7 @@ void ensureInitialized() {
   if (object_manager == nullptr)
     throw std::runtime_error("seg::initialize() must be called first");
 }
+
 }  // namespace
 
 namespace seg {
@@ -76,8 +77,7 @@ void addObject(const std::string& name,
 }
 
 void addObject(const std::string& name, object::ObjectBase* object) {
-  ensureInitialized();
-  object_manager->addObject(name, object);
+  addObject(name, std::shared_ptr<object::ObjectBase>(object));
 }
 
 std::string addObject(const std::shared_ptr<object::ObjectBase>& object) {
@@ -86,13 +86,17 @@ std::string addObject(const std::shared_ptr<object::ObjectBase>& object) {
 }
 
 std::string addObject(object::ObjectBase* object) {
-  ensureInitialized();
-  return object_manager->addObject(object);
+  return addObject(std::shared_ptr<object::ObjectBase>(object));
 }
 
 bool deleteObject(const std::string& name) {
   ensureInitialized();
   return object_manager->deleteObject(name);
+}
+
+void waitUntilClosed() {
+  ensureInitialized();
+  app->waitUntilClosed();
 }
 
 }  // namespace seg

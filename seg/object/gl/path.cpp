@@ -8,6 +8,7 @@
 
 #include "seg/object/gl/basic_renderers.h"
 #include "seg/object/gl/pose.h"
+#include "seg/ui/general_inspector.h"
 #include "seg/utilities/logger.h"
 
 namespace seg {

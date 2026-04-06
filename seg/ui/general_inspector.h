@@ -1,11 +1,10 @@
-#ifndef SEG_UI_GENERAL_INSPECTOR_H
-#define SEG_UI_GENERAL_INSPECTOR_H
+#pragma once
 
+#include <cstdio>
 #include <functional>
 #include <memory>
 #include <string>
-#include <tuple>
-#include <typeinfo>
+#include <type_traits>
 #include <vector>
 
 namespace seg {
@@ -16,25 +15,37 @@ class GeneralInspector {
   static const int DEFAULT_ITEM_WIDTH = 150;
 
  private:
-#define MACRO_LINK_MEMBER(ID, NAME) \
-  decltype(std::get<ID>(data)) NAME() { return std::get<ID>(data); }
   struct Field {
-    std::tuple<std::string, void*, const std::type_info*> data;
-    MACRO_LINK_MEMBER(0, name);
-    MACRO_LINK_MEMBER(1, pointer);
-    MACRO_LINK_MEMBER(2, type);
-    Field(std::string _string, void* ptr, const std::type_info* typeinfo)
-        : data(std::make_tuple(_string, ptr, typeinfo)) {}
+    std::string name;
+    std::function<std::string()> display;
   };
-#undef MACRO_LINK_MEMBER
+
+  template <typename T>
+  static std::string format(T* pointer) {
+    if constexpr (std::is_same_v<T, bool>) {
+      return *pointer ? "True" : "False";
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      return *pointer;
+    } else if constexpr (std::is_same_v<T, float> ||
+                         std::is_same_v<T, double>) {
+      char buf[32];
+      std::snprintf(buf, sizeof(buf), "%.1f", static_cast<double>(*pointer));
+      return buf;
+    } else if constexpr (std::is_integral_v<T>) {
+      return std::to_string(*pointer);
+    } else {
+      return "unsupported";
+    }
+  }
 
  public:
   class Builder {
    public:
     template <typename T>
     Builder& addField(std::string field_name, T* pointer) {
-      field_data.push_back(std::move(
-          Field(field_name, static_cast<void*>(pointer), &typeid(pointer))));
+      field_data.push_back({std::move(field_name), [pointer] {
+                              return GeneralInspector::format(pointer);
+                            }});
       return *this;
     }
 
@@ -75,5 +86,3 @@ class GeneralInspector {
 };  // class GeneralInspector
 }  // namespace ui
 }  // namespace seg
-
-#endif

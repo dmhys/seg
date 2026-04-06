@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <imgui.h>
+#include <imgui_internal.h>
 
 #include "seg/gl/scene.h"
 #include "seg/object/ui_object.h"
@@ -20,7 +21,7 @@ void Controller::init(gl::Scene *_scene,
   object_manager = _object_manager;
 
   ObjectListWindow *obj_list = new ObjectListWindow(object_manager);
-  ObjectInspectorWindow *obj_inspector = new ObjectInspectorWindow();
+  ObjectInspectorWindow *obj_inspector = new ObjectInspectorWindow(object_manager);
 
   base_objects.emplace_back(std::make_unique<MainMenu>(
       &obj_list->is_visible, &obj_inspector->is_visible));
@@ -34,6 +35,15 @@ void Controller::init(gl::Scene *_scene,
 void Controller::drawUI() {
   ImGuiID dockspace = ImGui::DockSpaceOverViewport(
       ImGui::GetWindowViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+
+  // track central node area for 3D viewport
+  ImGuiDockNode* central = ImGui::DockBuilderGetCentralNode(dockspace);
+  if (central) {
+    viewport_pos = Position(static_cast<int>(central->Pos.x),
+                            static_cast<int>(central->Pos.y));
+    viewport_size = WindowSize(static_cast<int>(central->Size.x),
+                               static_cast<int>(central->Size.y));
+  }
 
   handleMouseEvents();
 

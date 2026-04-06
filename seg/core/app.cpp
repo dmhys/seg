@@ -15,7 +15,7 @@
 
 #include "seg/core/config.h"
 #include "seg/gl/scene.h"
-#include "seg/object/object_manager.h"
+#include "seg/core/object_manager.h"
 #include "seg/types.h"
 #include "seg/ui/controller.h"
 #include "seg/resources/roboto_regular.h"
@@ -35,15 +35,27 @@ App::~App() {
 
 void App::initialize(const std::string& window_name,
                      const WindowSize& window_size) {
+  if (seg_thread.joinable())
+    throw std::runtime_error("seg::initialize() called more than once");
   seg_thread = std::thread(&App::appMain, this, window_name, window_size);
 
-  while (initialized.load() == false)
+  while (!initialized.load())
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  if (!window)
+    throw std::runtime_error("SEG window creation failed");
+}
+
+void App::waitUntilClosed() {
+  if (seg_thread.joinable()) seg_thread.join();
 }
 
 void App::appMain(const std::string& window_name,
                   const WindowSize& window_size) {
   windowSetup(window_name, window_size);
+  if (!window) {
+    initialized = true;
+    return;
+  }
 
   initializeComponents();
 
@@ -71,6 +83,10 @@ void App::windowSetup(const std::string& window_name,
   // create window & context
   window = glfwCreateWindow(window_size.width, window_size.height,
                             window_name.c_str(), nullptr, nullptr);
+  if (!window) {
+    LOG_ERROR("Failed to create GLFW window");
+    return;
+  }
   glfwMakeContextCurrent(window);
   glfwSwapInterval(1);  // vsync
 
@@ -101,7 +117,7 @@ void App::initializeComponents() {
   if (scene == nullptr) throw std::runtime_error("Scene is not set!");
 
   scene->init(window);
-  object_manager->setScene(scene.get());
+  object_manager->setShader(&scene->general_shader);
   controller->init(scene.get(), object_manager.get());
 }
 
@@ -113,6 +129,20 @@ void App::draw() {
   ImGui::NewFrame();
 
   controller->drawUI();
+
+  // set 3D viewport to dockspace central node area
+  if (controller->viewport_size.width > 0 &&
+      controller->viewport_size.height > 0) {
+    int win_h;
+    glfwGetWindowSize(window, nullptr, &win_h);
+    glViewport(
+        controller->viewport_pos.x,
+        win_h - controller->viewport_pos.y - controller->viewport_size.height,
+        controller->viewport_size.width, controller->viewport_size.height);
+    scene->camera.onScreenResize(controller->viewport_size.width,
+                                  controller->viewport_size.height);
+  }
+
   scene->draw();
   object_manager->draw();
 
@@ -133,7 +163,15 @@ void App::shutdown() {
   object_manager->onCoreShutdown();
 
   glfwDestroyWindow(window);
-  glfwTerminate();
+  window = nullptr;
+
+  // glfwTerminate disabled — segfaults on WSL2 (Mesa TLS cleanup) and
+  // native Linux Wayland (GLFW #2536, #1861, WSLg #715).
+  // Root cause: Mesa/Wayland allocates TLS on the GL thread; cleanup
+  // on thread exit dereferences freed Wayland proxies.
+  // No upstream fix as of GLFW 3.4 / Mesa 24.x.
+  // OS reclaims all resources on process exit.
+  // glfwTerminate();
 }
 
 }  // namespace seg

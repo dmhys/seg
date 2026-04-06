@@ -1,5 +1,4 @@
-#ifndef SEG_GL_ORIGIN_AXIS_RENDERER_H
-#define SEG_GL_ORIGIN_AXIS_RENDERER_H
+#pragma once
 
 #include "seg/object/gl_object.h"
 
@@ -13,11 +12,9 @@ class OriginAxisRenderer : public object::GLObject {
   ~OriginAxisRenderer();
   const std::string getType() const override { return "Origin Axis"; }
 
- protected:
+ private:
   void drawImpl() override;
 
 };  // class OriginAxisRenderer
 }  // namespace gl
 }  // namespace seg
-
-#endif

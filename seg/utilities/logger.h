@@ -1,5 +1,4 @@
-#ifndef SEG_UTILITES_LOGGER_H
-#define SEG_UTILITES_LOGGER_H
+#pragma once
 
 #ifdef SPDLOG
 
@@ -23,7 +22,5 @@
 #define LOG_ERROR(...) printf(__VA_ARGS__)
 #define LOG_FATAL(...) printf(__VA_ARGS__)
 #define SET_LOGGER_LEVEL(LEVEL)
-
-#endif
 
 #endif

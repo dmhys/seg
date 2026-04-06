@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_OBJECT_H
-#define SEG_OBJECT_OBJECT_H
+#pragma once
 
 #include <memory>
 
@@ -24,5 +23,3 @@ typedef PointcloudRenderer Pointcloud;
 
 }  // namespace object
 }  // namespace seg
-
-#endif

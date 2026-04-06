@@ -48,6 +48,7 @@ void StaticLineRenderer::drawImpl() {
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
 
+  shader->bind();
   shader->setUniform("model_matrix", model_matrix);
   shader->setUniform("color_mode", 0);
   shader->setUniform("uniform_color", color.asEigenVector4f());

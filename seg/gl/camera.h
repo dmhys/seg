@@ -1,5 +1,4 @@
-#ifndef SEG_GL_CAMERA_H
-#define SEG_GL_CAMERA_H
+#pragma once
 
 #include <Eigen/Dense>
 
@@ -62,8 +61,8 @@ class Camera {
   void updateProjectionMatrixPerspective();
 
   // MouseEvents
-  Eigen::Vector2i window_size;
-  Eigen::Vector2i last_mouse_pos;
+  Eigen::Vector2i window_size = Eigen::Vector2i::Zero();
+  Eigen::Vector2i last_mouse_pos = Eigen::Vector2i::Zero();
   MouseButton current_clicked_button = MOUSE_NONE;
 
   // View
@@ -75,7 +74,7 @@ class Camera {
   // Projection
   ProjectionMode mode = PERSPECTIVE;
   float hfov = 50.0f;
-  float inverse_aspect;  // height/width
+  float inverse_aspect = 1.0f;  // height/width
   float near = 0.1f;
   float far = 5000.0f;
 
@@ -86,5 +85,3 @@ class Camera {
 };  // class Camera
 }  // namespace gl
 }  // namespace seg
-
-#endif

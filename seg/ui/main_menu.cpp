@@ -97,7 +97,7 @@ void MainMenu::windowMenu() {
 
     ImGui::MenuItem("Objects", nullptr, show_object_list);
 
-    ImGui::MenuItem("Insepector", nullptr, show_object_inspector);
+    ImGui::MenuItem("Inspector", nullptr, show_object_inspector);
 
     ImGui::EndMenu();
   }

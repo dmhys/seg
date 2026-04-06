@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_POSE_H
-#define SEG_OBJECT_POSE_H
+#pragma once
 
 #include <mutex>
 #include <tuple>
@@ -28,7 +27,7 @@ class Pose : public GLObject {
   void setCameraParameters(
       float width, float height, float fx, float fy, float cx, float cy);
   void setColor(const RGBA& _color) { color = _color; }
-  void setScale(float _scale) { scale = _scale; };
+  void setScale(float _scale) { scale = _scale; }
   void setLineWidth(float _line_width) { line_width = _line_width; }
 
   void setData(Eigen::Matrix4f&& pose);
@@ -45,7 +44,7 @@ class Pose : public GLObject {
 
   RGBA color = RGBA(0.0f, 0.0f, 0.0f, 1.0f);
 
-  Eigen::Matrix4f pose;
+  Eigen::Matrix4f pose = Eigen::Matrix4f::Identity();
   VisualType type = VisualType::AXIS;
   VisualType prev = VisualType::AXIS;
 
@@ -60,5 +59,3 @@ class Pose : public GLObject {
 const char* enumToCharP(object::Pose::VisualType type);
 
 }  // namespace seg
-
-#endif

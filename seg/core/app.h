@@ -1,5 +1,4 @@
-#ifndef SEG_CORE_APP_H
-#define SEG_CORE_APP_H
+#pragma once
 
 #include <atomic>
 #include <memory>
@@ -28,6 +27,7 @@ class App {
   ~App();
   void initialize(const std::string& window_name,
                   const WindowSize& window_size);
+  void waitUntilClosed();
 
   void setController(ui::Controller* _controller) {
     controller.reset(_controller);
@@ -37,8 +37,8 @@ class App {
   }
   void setScene(gl::Scene* _scene) { scene.reset(_scene); }
 
- protected:
-  GLFWwindow* window;
+ private:
+  GLFWwindow* window = nullptr;
 
   std::unique_ptr<ui::Controller> controller;
   std::unique_ptr<object::ObjectManager> object_manager;
@@ -58,5 +58,3 @@ class App {
 
 };  // class App
 }  // namespace seg
-
-#endif

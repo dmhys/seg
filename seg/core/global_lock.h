@@ -1,5 +1,4 @@
-#ifndef SEG_CORE_GLOBAL_LOCK_H
-#define SEG_CORE_GLOBAL_LOCK_H
+#pragma once
 
 #include <mutex>
 
@@ -24,5 +23,3 @@ class GlobalLock {
 
 };  // class GlobalLock
 }  // namespace seg
-
-#endif

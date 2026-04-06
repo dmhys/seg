@@ -1,5 +1,4 @@
-#ifndef SEG_OBJECT_BASIC_RENDERERS_H
-#define SEG_OBJECT_BASIC_RENDERERS_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -132,5 +131,3 @@ class StaticMeshRenderer : public GLObject {
 
 }  // namespace object
 }  // namespace seg
-
-#endif

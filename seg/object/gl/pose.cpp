@@ -107,6 +107,7 @@ void Pose::drawImpl() {
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
 
+  shader->bind();
   shader->setUniform("model_matrix", model_matrix);
 
   if (type == VisualType::AXIS)
