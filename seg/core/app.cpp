@@ -108,8 +108,15 @@ void App::windowSetup() {
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+  // HiDPI content scale
+  float x_scale, y_scale;
+  glfwGetWindowContentScale(window, &x_scale, &y_scale);
   io.Fonts->AddFontFromMemoryCompressedTTF(
-      RobotoRegular_compressed_data, RobotoRegular_compressed_size, 16.0f);
+      RobotoRegular_compressed_data, RobotoRegular_compressed_size,
+      16.0f * x_scale);
+  io.FontGlobalScale = 1.0f / x_scale;
+
   if (getConfig().theme == Theme::LIGHT)
     ImGui::StyleColorsLight();
   else
@@ -141,12 +148,19 @@ void App::draw() {
   // set 3D viewport to dockspace central node area
   if (controller->viewport_size.width > 0 &&
       controller->viewport_size.height > 0) {
-    int win_h;
-    glfwGetWindowSize(window, nullptr, &win_h);
+    int win_w, win_h, fb_w, fb_h;
+    glfwGetWindowSize(window, &win_w, &win_h);
+    glfwGetFramebufferSize(window, &fb_w, &fb_h);
+    float scale_x = static_cast<float>(fb_w) / static_cast<float>(win_w);
+    float scale_y = static_cast<float>(fb_h) / static_cast<float>(win_h);
+
     glViewport(
-        controller->viewport_pos.x,
-        win_h - controller->viewport_pos.y - controller->viewport_size.height,
-        controller->viewport_size.width, controller->viewport_size.height);
+        static_cast<int>(controller->viewport_pos.x * scale_x),
+        fb_h - static_cast<int>((controller->viewport_pos.y +
+                                 controller->viewport_size.height) *
+                                scale_y),
+        static_cast<int>(controller->viewport_size.width * scale_x),
+        static_cast<int>(controller->viewport_size.height * scale_y));
     scene->camera.onScreenResize(controller->viewport_size.width,
                                  controller->viewport_size.height);
   }

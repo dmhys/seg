@@ -21,15 +21,20 @@ void Scene::init(GLFWwindow* window) {
   camera.init(width, height);
 
   // gl
-  glViewport(0, 0, width, height);
+  int fb_width, fb_height;
+  glfwGetFramebufferSize(window, &fb_width, &fb_height);
+  glViewport(0, 0, fb_width, fb_height);
 
   // Callbacks — use GLFW user pointer instead of global statics
   glfwSetWindowUserPointer(window, this);
-  glfwSetWindowSizeCallback(window, [](GLFWwindow* w, int width, int height) {
-    auto* scene = static_cast<Scene*>(glfwGetWindowUserPointer(w));
-    scene->camera.onScreenResize(width, height);
-    scene->onScreenResize(width, height);
-  });
+  glfwSetFramebufferSizeCallback(
+      window, [](GLFWwindow* w, int fb_width, int fb_height) {
+        auto* scene = static_cast<Scene*>(glfwGetWindowUserPointer(w));
+        int win_width, win_height;
+        glfwGetWindowSize(w, &win_width, &win_height);
+        scene->camera.onScreenResize(win_width, win_height);
+        scene->onScreenResize(fb_width, fb_height);
+      });
 
   // base object - grid
   auto grid_renderer = new GridRenderer();
