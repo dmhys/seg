@@ -4,6 +4,7 @@
 #include <memory>
 #include <thread>
 
+#include "seg/options.h"
 #include "seg/types.h"
 
 // forward declarations
@@ -23,11 +24,14 @@ class ObjectManager;
 
 class App {
  public:
-  App(){};
+  App() {};
   ~App();
   void initialize(const std::string& window_name,
-                  const WindowSize& window_size);
+                  const WindowSize& window_size,
+                  ThreadPolicy thread_policy);
+  void appMain();
   void waitUntilClosed();
+  bool isRunning() const { return running.load(); }
 
   void setController(ui::Controller* _controller) {
     controller.reset(_controller);
@@ -44,14 +48,16 @@ class App {
   std::unique_ptr<object::ObjectManager> object_manager;
   std::unique_ptr<gl::Scene> scene;
 
+  ThreadPolicy thread_policy;
+  std::string window_name;
+  WindowSize window_size;
+
   std::thread seg_thread;
   std::atomic<bool> turn_off_requested{false};
   std::atomic<bool> initialized{false};
+  std::atomic<bool> running{false};
 
-  void appMain(const std::string& window_name, const WindowSize& window_size);
-
-  void windowSetup(const std::string& window_name,
-                   const WindowSize& window_size);
+  void windowSetup();
   void initializeComponents();
   void draw();
   void shutdown();

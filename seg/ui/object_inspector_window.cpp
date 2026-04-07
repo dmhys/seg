@@ -5,8 +5,8 @@
 #include <imgui.h>
 
 #include "seg/core/config.h"
-#include "seg/object/object_base.h"
 #include "seg/core/object_manager.h"
+#include "seg/object/object_base.h"
 #include "seg/ui/general_inspector.h"
 
 namespace seg {

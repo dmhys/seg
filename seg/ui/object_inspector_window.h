@@ -16,7 +16,9 @@ class ObjectInspectorWindow : public object::UIObject {
   ObjectInspectorWindow(const ObjectInspectorWindow&) = delete;
   ObjectInspectorWindow& operator=(const ObjectInspectorWindow&) = delete;
 
-  const std::string getType() const override { return "Object Inspector Window"; }
+  const std::string getType() const override {
+    return "Object Inspector Window";
+  }
 
  private:
   void drawImpl() override;

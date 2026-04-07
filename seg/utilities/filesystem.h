@@ -6,6 +6,6 @@
 // some convinient functions for beginers.
 // C++ >=17 users can use std::filesystems instead.
 namespace seg {
-std::vector<std::string> getFileList(const std::string &directory,
+std::vector<std::string> getFileList(const std::string& directory,
                                      std::string extension = "");
 }

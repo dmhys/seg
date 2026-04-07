@@ -9,7 +9,8 @@
 namespace seg {
 namespace gl {
 GridRenderer::GridRenderer() {
-  // empty VAO for fullscreen quad (vertices generated in shader via gl_VertexID)
+  // empty VAO for fullscreen quad (vertices generated in shader via
+  // gl_VertexID)
   glGenVertexArrays(1, &vao);
 }
 

@@ -15,13 +15,14 @@
 
 namespace seg {
 namespace ui {
-void Controller::init(gl::Scene *_scene,
-                      object::ObjectManager *_object_manager) {
+void Controller::init(gl::Scene* _scene,
+                      object::ObjectManager* _object_manager) {
   scene = _scene;
   object_manager = _object_manager;
 
-  ObjectListWindow *obj_list = new ObjectListWindow(object_manager);
-  ObjectInspectorWindow *obj_inspector = new ObjectInspectorWindow(object_manager);
+  ObjectListWindow* obj_list = new ObjectListWindow(object_manager);
+  ObjectInspectorWindow* obj_inspector =
+      new ObjectInspectorWindow(object_manager);
 
   base_objects.emplace_back(std::make_unique<MainMenu>(
       &obj_list->is_visible, &obj_inspector->is_visible));
@@ -47,11 +48,11 @@ void Controller::drawUI() {
 
   handleMouseEvents();
 
-  for (auto &object_ptr : base_objects) object_ptr->draw();
+  for (auto& object_ptr : base_objects) object_ptr->draw();
 }
 
 void Controller::handleMouseEvents() {
-  ImGuiIO &io = ImGui::GetIO();
+  ImGuiIO& io = ImGui::GetIO();
   if (io.WantCaptureMouse)  // mouse hovering on GUI
     return;
 

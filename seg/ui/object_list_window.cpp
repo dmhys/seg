@@ -22,8 +22,7 @@ void ObjectListWindow::drawImpl() {
   int i = -1;  // to resolve id collision
   for (auto& object : object_manager->objects) {
     i++;
-    const bool is_selected =
-        (object.first == getConfig().selected_object_name);
+    const bool is_selected = (object.first == getConfig().selected_object_name);
     ImGui::Checkbox((std::string("##") + std::to_string(i)).c_str(),
                     &object.second.get()->is_visible);
     ImGui::SameLine();

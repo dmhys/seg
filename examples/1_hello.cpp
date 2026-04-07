@@ -39,6 +39,9 @@ int main() {
   seg::addObject("Sphere",
                  new segobj::Mesh(segobj::primitives::Icosphere(0.498, 1)));
 
+#ifdef __APPLE__
+  seg::run();
+#else
   // SEG objects can be added anytime!
   std::this_thread::sleep_for(3000ms);  // 3 sceonds sleep
   seg::addObject(
@@ -46,6 +49,7 @@ int main() {
           3000, Eigen::Vector3f{0, 10, 0}, 1)));
 
   seg::waitUntilClosed();
+#endif
 
   return 0;
 }

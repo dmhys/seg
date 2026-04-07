@@ -22,7 +22,7 @@ enum class ColorMode {
 
 class Shader {
  public:
-  Shader(){};
+  Shader() {};
   void init(ShaderType type);
   void bind();
   void unbind();

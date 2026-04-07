@@ -16,14 +16,14 @@
 namespace seg {
 namespace object {
 StaticLineRenderer::StaticLineRenderer(
-    const std::tuple<std::vector<Eigen::Vector3f>, std::vector<Eigen::Vector3f>>
-        &vertices_colors)
+    const std::tuple<std::vector<Eigen::Vector3f>,
+                     std::vector<Eigen::Vector3f>>& vertices_colors)
     : StaticLineRenderer(std::get<0>(vertices_colors),
                          std::get<1>(vertices_colors)) {}
 
 StaticLineRenderer::StaticLineRenderer(
-    const std::vector<Eigen::Vector3f> &vertices,
-    const std::vector<Eigen::Vector3f> &colors) {
+    const std::vector<Eigen::Vector3f>& vertices,
+    const std::vector<Eigen::Vector3f>& colors) {
   if (vertices.empty())
     throw std::invalid_argument("StaticLineRenderer - Given Vertices empty.");
 

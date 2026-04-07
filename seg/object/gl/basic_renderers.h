@@ -20,11 +20,11 @@ class LineRenderer : public GLObject {
 
   const std::string getType() const override { return "Line"; }
 
-  void setColor(const RGBA &_color) { color = _color; }
+  void setColor(const RGBA& _color) { color = _color; }
 
-  void addData(const Eigen::Vector3f &vertex);
-  void setData(std::vector<Eigen::Vector3f> &&vertices);
-  void setData(const std::vector<Eigen::Vector3f> &vertices);
+  void addData(const Eigen::Vector3f& vertex);
+  void setData(std::vector<Eigen::Vector3f>&& vertices);
+  void setData(const std::vector<Eigen::Vector3f>& vertices);
 
   void setLineWidth(float _line_width) { line_width = _line_width; }
   float getLineWidth() const { return line_width; }
@@ -42,12 +42,12 @@ class StaticLineRenderer : public GLObject {
  public:
   StaticLineRenderer(
       const std::tuple<std::vector<Eigen::Vector3f>,
-                       std::vector<Eigen::Vector3f>> &vertices_colors);
-  StaticLineRenderer(const std::vector<Eigen::Vector3f> &vertices,
-                     const std::vector<Eigen::Vector3f> &colors =
+                       std::vector<Eigen::Vector3f>>& vertices_colors);
+  StaticLineRenderer(const std::vector<Eigen::Vector3f>& vertices,
+                     const std::vector<Eigen::Vector3f>& colors =
                          std::vector<Eigen::Vector3f>());
 
-  void setColor(const RGBA &_color) { color = _color; }
+  void setColor(const RGBA& _color) { color = _color; }
 
   const std::string getType() const override { return "Static Line"; }
 
@@ -64,11 +64,11 @@ class PointcloudRenderer : public GLObject {
   PointcloudRenderer();
 
   const std::string getType() const override { return "Pointcloud"; }
-  void setColor(const RGBA &_color) { color = _color; }
+  void setColor(const RGBA& _color) { color = _color; }
 
-  void addData(const Eigen::Vector3f &vertex);
-  void setData(std::vector<Eigen::Vector3f> &&vertices);
-  void setData(const std::vector<Eigen::Vector3f> &vertices);
+  void addData(const Eigen::Vector3f& vertex);
+  void setData(std::vector<Eigen::Vector3f>&& vertices);
+  void setData(const std::vector<Eigen::Vector3f>& vertices);
 
  private:
   void drawImpl() override;
@@ -81,17 +81,17 @@ class PointcloudRenderer : public GLObject {
 
 class StaticPointcloudRenderer : public GLObject {
  public:
-  StaticPointcloudRenderer(const std::vector<Eigen::Vector3f> &vertices,
-                           const std::vector<float> &scalars);
+  StaticPointcloudRenderer(const std::vector<Eigen::Vector3f>& vertices,
+                           const std::vector<float>& scalars);
   StaticPointcloudRenderer(
       const std::tuple<std::vector<Eigen::Vector3f>,
-                       std::vector<Eigen::Vector3f>> &vertices_colors);
+                       std::vector<Eigen::Vector3f>>& vertices_colors);
   StaticPointcloudRenderer(
-      const std::vector<Eigen::Vector3f> &vertices,
-      const std::vector<Eigen::Vector3f> &colors =
+      const std::vector<Eigen::Vector3f>& vertices,
+      const std::vector<Eigen::Vector3f>& colors =
           std::vector<Eigen::Vector3f>(),
-      const std::vector<float> &scalars = std::vector<float>());
-  void setColor(const RGBA &_color) { color = _color; }
+      const std::vector<float>& scalars = std::vector<float>());
+  void setColor(const RGBA& _color) { color = _color; }
 
   const std::string getType() const override { return "Static Pointcloud"; }
 
@@ -119,7 +119,7 @@ class StaticMeshRenderer : public GLObject {
       const std::tuple<std::vector<Eigen::Vector3f>, std::vector<Triangle>>
           vertices_triangles);
 
-  void setColor(const RGBA &_color) { color = _color; }
+  void setColor(const RGBA& _color) { color = _color; }
   const std::string getType() const override { return "Static Mesh"; }
 
  private:

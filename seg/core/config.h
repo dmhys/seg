@@ -21,7 +21,7 @@ class Config {
   std::string selected_object_name = "";
 
  private:
-  Config(){};
+  Config() {};
 
 };  // class Config
 }  // namespace core

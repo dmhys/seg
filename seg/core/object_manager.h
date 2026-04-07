@@ -21,7 +21,7 @@ class ObjectManager {
  public:
   void onCoreShutdown();
 
-  void setShader(gl::Shader* _shader) { shader = _shader; }
+  void setShader(gl::Shader* shader);
 
   std::string addObject(ObjectBase* obj);
   std::string addObject(const std::shared_ptr<ObjectBase>& obj);

@@ -18,21 +18,21 @@ namespace seg {
 namespace object {
 
 StaticPointcloudRenderer::StaticPointcloudRenderer(
-    const std::vector<Eigen::Vector3f> &vertices,
-    const std::vector<float> &scalars)
+    const std::vector<Eigen::Vector3f>& vertices,
+    const std::vector<float>& scalars)
     : StaticPointcloudRenderer(
           vertices, std::vector<Eigen::Vector3f>(), scalars) {}
 
 StaticPointcloudRenderer::StaticPointcloudRenderer(
-    const std::tuple<std::vector<Eigen::Vector3f>, std::vector<Eigen::Vector3f>>
-        &vertices_colors)
+    const std::tuple<std::vector<Eigen::Vector3f>,
+                     std::vector<Eigen::Vector3f>>& vertices_colors)
     : StaticPointcloudRenderer(std::get<0>(vertices_colors),
                                std::get<1>(vertices_colors)) {}
 
 StaticPointcloudRenderer::StaticPointcloudRenderer(
-    const std::vector<Eigen::Vector3f> &vertices,
-    const std::vector<Eigen::Vector3f> &colors,
-    const std::vector<float> &scalars) {
+    const std::vector<Eigen::Vector3f>& vertices,
+    const std::vector<Eigen::Vector3f>& colors,
+    const std::vector<float>& scalars) {
   if (vertices.empty())
     throw std::invalid_argument(
         "StaticPointcloudRenderer - Given Vertices empty.");
@@ -120,7 +120,7 @@ void StaticPointcloudRenderer::drawInspector() {
 
   if (color_mode == gl::ColorMode::UNIFORM) {
     if (ImGui::TreeNode("Color Picker")) {
-      ImGui::ColorPicker3("##", (float *)&color, color_edit_flag);
+      ImGui::ColorPicker3("##", (float*)&color, color_edit_flag);
       ImGui::TreePop();
     }
   } else if (color_mode == gl::ColorMode::ZAXIS) {

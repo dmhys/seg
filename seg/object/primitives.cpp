@@ -51,7 +51,7 @@ std::vector<Eigen::Vector3f> generate(
 
   std::vector<Eigen::Vector3f> return_value;
   return_value.reserve(16);
-  for (auto &&edge : edges) {
+  for (auto&& edge : edges) {
     return_value.push_back(vertices[edge.vertex_index[0]]);
     return_value.push_back(vertices[edge.vertex_index[1]]);
   }
@@ -163,7 +163,7 @@ primitives::Icosahedron(float edge_length) {
   std::vector<Eigen::Vector3f> vertices = icosahedron::vertices;
 
   const float multiplier = edge_length / icosahedron::l;
-  for (auto &&vertex : vertices) vertex *= multiplier;
+  for (auto&& vertex : vertices) vertex *= multiplier;
 
   return std::make_tuple(std::move(vertices), icosahedron::triangles);
 }
@@ -200,7 +200,7 @@ primitives::Icosphere(float radius, int detail_level) {
     std::vector<Triangle> new_triangles;
     LUT lut;
 
-    for (auto &&triangle : triangles)  // each triangle
+    for (auto&& triangle : triangles)  // each triangle
     {
       std::vector<unsigned int> midle_vertex_id(3);
       for (int j = 0; j < 3; j++)  // each edge
@@ -210,16 +210,16 @@ primitives::Icosphere(float radius, int detail_level) {
         if (edge.first > edge.second) std::swap(edge.first, edge.second);
 
         auto inserted = lut.insert({edge, vertices.size()});
-        const bool &is_new_vertex = inserted.second;
+        const bool& is_new_vertex = inserted.second;
         if (is_new_vertex) {
-          auto &vert1 = vertices[triangle.vertex_index[j]];
-          auto &vert2 = vertices[triangle.vertex_index[(j + 1) % 3]];
+          auto& vert1 = vertices[triangle.vertex_index[j]];
+          auto& vert2 = vertices[triangle.vertex_index[(j + 1) % 3]];
           Eigen::Vector3f new_vertex = (vert1 + vert2).normalized();
           vertices.push_back(new_vertex);
         }
 
-        const auto &lut_iter = inserted.first;
-        const auto &vertex_id = lut_iter->second;
+        const auto& lut_iter = inserted.first;
+        const auto& vertex_id = lut_iter->second;
         midle_vertex_id[j] = vertex_id;
       }
 
@@ -237,24 +237,24 @@ primitives::Icosphere(float radius, int detail_level) {
   }
 
   // give radius
-  for (auto &&vertex : vertices) vertex *= radius;
+  for (auto&& vertex : vertices) vertex *= radius;
 
   return std::make_tuple(std::move(vertices), std::move(triangles));
 }
 
 std::vector<Eigen::Vector3f> primitives::Wireframe(
-    const std::tuple<std::vector<Eigen::Vector3f>, std::vector<Triangle>>
-        &mesh) {
+    const std::tuple<std::vector<Eigen::Vector3f>, std::vector<Triangle>>&
+        mesh) {
   std::vector<Eigen::Vector3f> ret;
-  const auto &vertices = std::get<0>(mesh);
-  const auto &triangles = std::get<1>(mesh);
+  const auto& vertices = std::get<0>(mesh);
+  const auto& triangles = std::get<1>(mesh);
   ret.reserve(6 *
               vertices.size());  // x3(approx edge per vert) x2(vert per edge)
 
   using LUT = std::map<std::pair<unsigned int, unsigned int>, bool>;
   LUT lut;
 
-  for (auto &&triangle : triangles) {
+  for (auto&& triangle : triangles) {
     for (int j = 0; j < 3; j++)  // each edge
     {
       LUT::key_type edge(triangle.vertex_index[j],
@@ -262,7 +262,7 @@ std::vector<Eigen::Vector3f> primitives::Wireframe(
       if (edge.first > edge.second) std::swap(edge.first, edge.second);
 
       auto inserted = lut.insert({edge, true});
-      const bool &is_new_edge = inserted.second;
+      const bool& is_new_edge = inserted.second;
 
       ret.push_back(vertices[edge.first]);
       ret.push_back(vertices[edge.second]);

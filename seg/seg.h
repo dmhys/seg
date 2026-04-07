@@ -56,6 +56,14 @@ std::string addObject(object::ObjectBase* object);
 bool deleteObject(const std::string& name);
 
 /**
+ * @brief Starts the rendering loop on the calling thread (blocking).
+ *        In MAIN_THREAD mode, call this after initialize() and addObject().
+ *        In OWN_THREAD mode, this is called internally — external call is an
+ * error.
+ */
+void run();
+
+/**
  * @brief Blocks until the SEG window is closed.
  */
 void waitUntilClosed();

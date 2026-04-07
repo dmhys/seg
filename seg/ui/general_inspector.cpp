@@ -22,8 +22,7 @@ void GeneralInspector::draw() {
 void GeneralInspector::drawFields() {
   if (ImGui::TreeNode("Fields")) {
     for (auto& field : fields) {
-      ImGui::TextUnformatted(
-          (field.name + " : " + field.display()).c_str());
+      ImGui::TextUnformatted((field.name + " : " + field.display()).c_str());
     }
 
     ImGui::TreePop();

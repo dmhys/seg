@@ -42,7 +42,7 @@ ShaderSource getSource(seg::gl::ShaderType type) {
 namespace seg {
 
 namespace {
-const char *modes[] = {"Uniform", "RGB", "RGBA", "Scalar", "Z-Axis"};
+const char* modes[] = {"Uniform", "RGB", "RGBA", "Scalar", "Z-Axis"};
 }
 
 namespace gl {
@@ -63,7 +63,7 @@ void Shader::attatchShader(const std::string& vert_src,
   int err_len;
 
   // compile vertex shader
-  const char *vshader_cstr = vert_src.c_str();
+  const char* vshader_cstr = vert_src.c_str();
   glShaderSource(vert_shader, 1, &vshader_cstr, nullptr);
   glCompileShader(vert_shader);
   glGetShaderiv(vert_shader, GL_COMPILE_STATUS, &result);
@@ -76,7 +76,7 @@ void Shader::attatchShader(const std::string& vert_src,
   }
 
   // compile fragment shader
-  const char *fshader_cstr = frag_src.c_str();
+  const char* fshader_cstr = frag_src.c_str();
   glShaderSource(frag_shader, 1, &fshader_cstr, nullptr);
   glCompileShader(frag_shader);
   glGetShaderiv(frag_shader, GL_COMPILE_STATUS, &result);
@@ -120,7 +120,7 @@ void Shader::bind() { glUseProgram(program); }
 
 void Shader::unbind() { glUseProgram(0); }
 
-GLint Shader::getUniformId(const std::string &name) {
+GLint Shader::getUniformId(const std::string& name) {
   auto cache = uniform_id_cache.find(name);
   if (cache != uniform_id_cache.end()) return cache->second;
 
@@ -134,7 +134,7 @@ GLint Shader::getUniformId(const std::string &name) {
   return id;
 }
 
-GLint Shader::getAttribId(const std::string &name) {
+GLint Shader::getAttribId(const std::string& name) {
   auto cache = attrib_id_cache.find(name);
   if (cache != attrib_id_cache.end()) return cache->second;
 
@@ -150,7 +150,7 @@ GLint Shader::getAttribId(const std::string &name) {
 
 }  // namespace gl
 
-const char *enumToCharP(gl::ColorMode mode) {
+const char* enumToCharP(gl::ColorMode mode) {
   return modes[static_cast<int>(mode)];
 }
 

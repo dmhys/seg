@@ -50,8 +50,10 @@ namespace object {
 Image::Image(std::string _name) : name(_name) {
   window_flag |= ImGuiWindowFlags_NoScrollbar;
 
+#ifdef OPENCV
   auto tmp = cv::Mat(cv::Size2i(200, 200), CV_8UC3, cv::Scalar(0, 0, 0));
   setData(std::move(tmp));
+#endif
 
   inspector = ui::GeneralInspector::Builder()
                   .addField("Width ", &width)

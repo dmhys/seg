@@ -32,6 +32,7 @@ set(IMGUI_ROOT_DIR ${SEG_ROOT}/3rdparty/imgui)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(Threads REQUIRED)
+find_package(GLEW REQUIRED)
 
 if(USE_LOG AND USE_SPDLOG)
   add_subdirectory(${SEG_ROOT}/3rdparty/spdlog EXCLUDE_FROM_ALL)
@@ -83,7 +84,7 @@ target_link_libraries(seg
   PUBLIC
     ${OPENGL_LIBRARIES}
     glfw
-    GLEW
+    GLEW::GLEW
     Threads::Threads
   PRIVATE
     seg_imgui

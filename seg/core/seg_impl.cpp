@@ -5,9 +5,9 @@
 
 #include "seg/core/app.h"
 #include "seg/core/config.h"
+#include "seg/core/object_manager.h"
 #include "seg/gl/scene.h"
 #include "seg/object/gl/basic_renderers.h"
-#include "seg/core/object_manager.h"
 #include "seg/object/primitives.h"
 #include "seg/options.h"
 #include "seg/seg.h"
@@ -52,10 +52,11 @@ void setOptions(Options options) {
 }
 
 void initializeApp(const std::string& window_name,
-                   const WindowSize& window_size) {
+                   const WindowSize& window_size,
+                   ThreadPolicy thread_policy) {
   LOG_INFO("Initializing . . .");
 
-  app->initialize(window_name, window_size);
+  app->initialize(window_name, window_size, thread_policy);
 
   LOG_INFO("Initialized!");
 }
@@ -65,14 +66,31 @@ void initializeApp(const std::string& window_name,
 void initialize(const std::string& window_name,
                 const WindowSize& window_size,
                 Options options) {
+#ifdef __APPLE__
+  if (options.thread_policy == ThreadPolicy::OWN_THREAD)
+    throw std::runtime_error(
+        "OWN_THREAD is not supported on macOS. "
+        "macOS requires rendering on the main thread.");
+#endif
+
   createInstances();
   setOptions(options);
-  initializeApp(window_name, window_size);
+  initializeApp(window_name, window_size, options.thread_policy);
+}
+
+void run() {
+  ensureInitialized();
+
+  if (app->isRunning())
+    throw std::runtime_error("seg::run() called while already running");
+
+  app->appMain();
 }
 
 void addObject(const std::string& name,
                const std::shared_ptr<object::ObjectBase>& object) {
   ensureInitialized();
+
   object_manager->addObject(name, object);
 }
 
@@ -82,6 +100,7 @@ void addObject(const std::string& name, object::ObjectBase* object) {
 
 std::string addObject(const std::shared_ptr<object::ObjectBase>& object) {
   ensureInitialized();
+
   return object_manager->addObject(object);
 }
 
@@ -91,11 +110,13 @@ std::string addObject(object::ObjectBase* object) {
 
 bool deleteObject(const std::string& name) {
   ensureInitialized();
+
   return object_manager->deleteObject(name);
 }
 
 void waitUntilClosed() {
   ensureInitialized();
+
   app->waitUntilClosed();
 }
 

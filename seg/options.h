@@ -3,6 +3,8 @@
 #include "seg/types.h"
 
 namespace seg {
+enum class ThreadPolicy { MAIN_THREAD, OWN_THREAD };
+
 enum class Verbosity {
   DEBUG = 1,
   INFO,
@@ -25,10 +27,14 @@ enum _LogFlag {
 };
 
 struct Options {
-  Verbosity verbosity;
-  Theme theme;
+#ifdef __APPLE__
+  const ThreadPolicy thread_policy = ThreadPolicy::MAIN_THREAD;
+#else
+  const ThreadPolicy thread_policy = ThreadPolicy::OWN_THREAD;
+#endif
+  Verbosity verbosity = Verbosity::INFO;
+  Theme theme = Theme::LIGHT;
   LogFlag log_flag = 1;  // TODO: implement log flag configuration
-  Options() : verbosity(Verbosity::INFO), theme(Theme::LIGHT) {}
 };
 
 }  // namespace seg

@@ -14,11 +14,11 @@
 #include <imgui_impl_opengl3.h>
 
 #include "seg/core/config.h"
-#include "seg/gl/scene.h"
 #include "seg/core/object_manager.h"
+#include "seg/gl/scene.h"
+#include "seg/resources/roboto_regular.h"
 #include "seg/types.h"
 #include "seg/ui/controller.h"
-#include "seg/resources/roboto_regular.h"
 #include "seg/utilities/logger.h"
 
 namespace {
@@ -33,32 +33,38 @@ App::~App() {
   if (seg_thread.joinable()) seg_thread.join();
 }
 
-void App::initialize(const std::string& window_name,
-                     const WindowSize& window_size) {
-  if (seg_thread.joinable())
+void App::initialize(const std::string& _window_name,
+                     const WindowSize& _window_size,
+                     ThreadPolicy _thread_policy) {
+  if (initialized.load())
     throw std::runtime_error("seg::initialize() called more than once");
-  seg_thread = std::thread(&App::appMain, this, window_name, window_size);
 
-  while (!initialized.load())
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-  if (!window)
-    throw std::runtime_error("SEG window creation failed");
+  thread_policy = _thread_policy;
+  window_name = _window_name;
+  window_size = _window_size;
+
+  if (_thread_policy == ThreadPolicy::OWN_THREAD) {
+    seg_thread = std::thread(&App::appMain, this);
+    while (!initialized.load())
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    if (!window) throw std::runtime_error("SEG window creation failed");
+  }
 }
 
 void App::waitUntilClosed() {
   if (seg_thread.joinable()) seg_thread.join();
 }
 
-void App::appMain(const std::string& window_name,
-                  const WindowSize& window_size) {
-  windowSetup(window_name, window_size);
+void App::appMain() {
+  running = true;
+  windowSetup();
   if (!window) {
     initialized = true;
+    running = false;
     return;
   }
 
   initializeComponents();
-
   initialized = true;
 
   while (!glfwWindowShouldClose(window) && !turn_off_requested.load()) {
@@ -66,10 +72,10 @@ void App::appMain(const std::string& window_name,
   }
 
   shutdown();
+  running = false;
 }
 
-void App::windowSetup(const std::string& window_name,
-                      const WindowSize& window_size) {
+void App::windowSetup() {
   // set error callback for glfw
   glfwSetErrorCallback(glfwErorrCallback);
   if (glfwInit() == GL_FALSE) throw std::runtime_error("GLFW init failed!");
@@ -78,6 +84,8 @@ void App::windowSetup(const std::string& window_name,
   const char* glsl_version = "#version 330";
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_SAMPLES, 4);
 
   // create window & context
@@ -140,7 +148,7 @@ void App::draw() {
         win_h - controller->viewport_pos.y - controller->viewport_size.height,
         controller->viewport_size.width, controller->viewport_size.height);
     scene->camera.onScreenResize(controller->viewport_size.width,
-                                  controller->viewport_size.height);
+                                 controller->viewport_size.height);
   }
 
   scene->draw();
