@@ -35,7 +35,7 @@ class Pose : public GLObject {
 
   void setVisualType(VisualType _type) { type = _type; }
 
-  float line_width = 2.0f;
+  float line_width = 1.0f;
   float scale = 0.3f;
 
  private:

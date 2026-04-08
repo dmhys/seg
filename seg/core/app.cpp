@@ -177,12 +177,13 @@ void App::draw() {
 
 void App::shutdown() {
   // Clean Up
+  controller.reset();
+  scene.reset();
+  object_manager.reset();
+
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
-
-  scene->clearObjects();
-  object_manager->onCoreShutdown();
 
   glfwDestroyWindow(window);
   window = nullptr;

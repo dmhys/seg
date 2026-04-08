@@ -32,7 +32,7 @@ class LineRenderer : public GLObject {
   void drawImpl() override;
 
   RGBA color = RGBA(0.0f, 0.0f, 0.0f, 1.0f);
-  float line_width = 2.0f;
+  float line_width = 1.0f;
 
   std::vector<Eigen::Vector3f> vertices;
 };  // class LineRenderer
@@ -54,7 +54,7 @@ class StaticLineRenderer : public GLObject {
   void drawImpl() override;
 
   RGBA color = RGBA(0.0f, 0.0f, 0.0f, 1.0f);
-  float line_width = 2.0f;
+  float line_width = 1.0f;
 
 };  // class StaticLineRenderer
 

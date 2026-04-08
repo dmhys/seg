@@ -16,7 +16,7 @@ class ObjectBase;
 
 class ObjectManager {
  public:
-  void onCoreShutdown();
+  ~ObjectManager();
 
   void setShader(gl::Shader* shader);
 

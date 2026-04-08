@@ -12,16 +12,7 @@
 
 namespace seg {
 namespace object {
-void ObjectManager::setShader(gl::Shader* _shader) {
-  std::lock_guard<std::mutex> lock(mtx_object);
-  shader = _shader;
-  for (auto& [name, obj] : objects) {
-    if (obj->getObjectLayer() == ObjectLayer::GL)
-      static_cast<GLObject*>(obj.get())->setShader(shader);
-  }
-}
-
-void ObjectManager::onCoreShutdown() {
+ObjectManager::~ObjectManager() {
   std::lock_guard<std::mutex> lock(mtx_object);
   shut_down = true;
 
@@ -35,6 +26,15 @@ void ObjectManager::onCoreShutdown() {
     static_cast<GLObject*>(object.get())->glFree();
   }
   objects_to_delete.clear();
+}
+
+void ObjectManager::setShader(gl::Shader* _shader) {
+  std::lock_guard<std::mutex> lock(mtx_object);
+  shader = _shader;
+  for (auto& [name, obj] : objects) {
+    if (obj->getObjectLayer() == ObjectLayer::GL)
+      static_cast<GLObject*>(obj.get())->setShader(shader);
+  }
 }
 
 std::string ObjectManager::addObject(ObjectBase* obj) {

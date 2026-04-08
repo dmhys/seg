@@ -58,7 +58,7 @@ class Path : public GLObject {
   RGBA frame_color = RGBA(0.0f, 0.0f, 0.0f, 1.0f);
   RGBA line_color = RGBA(0.0f, 1.0f, 0.0f, 1.0f);
 
-  float axis_frame_line_width = 3.0f;
+  float axis_frame_line_width = 1.0f;
   float line_width = 1.0f;
 
   std::mutex pose_mtx;

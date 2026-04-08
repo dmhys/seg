@@ -159,7 +159,7 @@ void Path::drawInspector() {
 
   if (hasType(type, VisualType::LINE)) {
     if (ImGui::TreeNode("Line options")) {
-      ImGui::SliderFloat("Thickness", &line_width, 1.0, 5.0, "%.1f");
+      ImGui::SliderFloat("Thickness", &line_width, 0.0, 1.0, "%.2f");
       ImGui::ColorPicker3("##", (float*)&line_color, color_edit_flag);
 
       line_renderer->setLineWidth(line_width);
@@ -172,8 +172,8 @@ void Path::drawInspector() {
   if (hasType(type, VisualType::AXIS)) {
     if (ImGui::TreeNode("Axis Options")) {
       ImGui::SliderFloat("Scale", &pose_renderer->scale, 0.1, 5.0, "%.1f");
-      ImGui::SliderFloat("Thickness", &pose_renderer->line_width, 1.0, 5.0,
-                         "%.1f");
+      ImGui::SliderFloat("Thickness", &pose_renderer->line_width, 0.0, 1.0,
+                         "%.2f");
 
       ImGui::TreePop();
     }
@@ -182,8 +182,8 @@ void Path::drawInspector() {
   if (hasType(type, VisualType::CAMERA_FRAMES)) {
     if (ImGui::TreeNode("Frame Options")) {
       ImGui::SliderFloat("Scale", &pose_renderer->scale, 0.1, 5.0, "%.1f");
-      ImGui::SliderFloat("Thickness", &pose_renderer->line_width, 1.0, 5.0,
-                         "%.1f");
+      ImGui::SliderFloat("Thickness", &pose_renderer->line_width, 0.0, 1.0,
+                         "%.2f");
 
       ImGui::ColorPicker3("##", (float*)&frame_color, color_edit_flag);
 

@@ -22,17 +22,13 @@ MainMenu::~MainMenu() {
 void MainMenu::drawImpl() {
   if (show_demowindow) ImGui::ShowDemoWindow();
 
-  ImGui::BeginMainMenuBar();
-
-  fileMenu();
-
-  visualizeMenu();
-
-  windowMenu();
-
-  about();
-
-  ImGui::EndMainMenuBar();
+  if (ImGui::BeginMainMenuBar()) {
+    fileMenu();
+    visualizeMenu();
+    windowMenu();
+    about();
+    ImGui::EndMainMenuBar();
+  }
 }
 
 void MainMenu::fileMenu() {

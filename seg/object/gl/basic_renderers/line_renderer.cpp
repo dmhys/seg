@@ -32,7 +32,7 @@ LineRenderer::LineRenderer() {
       ui::GeneralInspector::Builder()
           .addField("Vertices", &pimpl->vertexCount())
           .addDrawFunction([this] {
-            ImGui::SliderFloat("Thickness", &line_width, 1.0, 5.0, "%.1f");
+            ImGui::SliderFloat("Thickness", &line_width, 0.0, 1.0, "%.2f");
             if (ImGui::TreeNode("Color Picker")) {
               ImGui::ColorPicker3("##", (float*)&color, color_edit_flag);
               ImGui::TreePop();

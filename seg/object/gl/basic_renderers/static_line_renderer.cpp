@@ -38,8 +38,7 @@ StaticLineRenderer::StaticLineRenderer(
       ui::GeneralInspector::Builder()
           .addField("Vertex", &pimpl->vertexCount())
           .addDrawFunction([this] {
-            ImGui::PushItemWidth(ui::GeneralInspector::DEFAULT_ITEM_WIDTH);
-            ImGui::SliderFloat("line width", &line_width, 1.0, 5.0, "%.1f");
+            ImGui::SliderFloat("line width", &line_width, 0.0, 1.0, "%.2f");
           })
           .build();
 }

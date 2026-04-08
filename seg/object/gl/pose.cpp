@@ -66,7 +66,7 @@ void Pose::drawInspector() {
   color_edit_flag |= ImGuiColorEditFlags_DisplayRGB;
 
   ImGui::SliderFloat("Scale", &scale, 0.1, 5.0, "%.1f");
-  ImGui::SliderFloat("Thickness", &line_width, 1.0, 5.0, "%.1f");
+  ImGui::SliderFloat("Thickness", &line_width, 0.0, 1.0, "%.2f");
 
   if (ImGui::BeginCombo("Visualize", enumToCharP(type))) {
     if (ImGui::Selectable(enumToCharP(VisualType::AXIS),
