@@ -56,6 +56,4 @@ class Pose : public GLObject {
 
 }  // namespace object
 
-const char* enumToCharP(object::Pose::VisualType type);
-
 }  // namespace seg

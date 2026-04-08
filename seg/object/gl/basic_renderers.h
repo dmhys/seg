@@ -7,7 +7,6 @@
 
 #include <Eigen/Dense>
 
-#include "seg/gl/shader.h"
 #include "seg/object/gl_object.h"
 #include "seg/types.h"
 
@@ -99,7 +98,7 @@ class StaticPointcloudRenderer : public GLObject {
   void drawImpl() override;
   void drawInspector();
 
-  gl::ColorMode color_mode = gl::ColorMode::UNIFORM;
+  ColorMode color_mode = ColorMode::UNIFORM;
   RGBA color = RGBA(0.0f, 0.0f, 0.0f, 1.0f);
   float point_size = 2.0f;
 

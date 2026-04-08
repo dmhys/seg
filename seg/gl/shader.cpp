@@ -41,10 +41,6 @@ ShaderSource getSource(seg::gl::ShaderType type) {
 
 namespace seg {
 
-namespace {
-const char* modes[] = {"Uniform", "RGB", "RGBA", "Scalar", "Z-Axis"};
-}
-
 namespace gl {
 Shader::~Shader() {
   if (program != 0) glDeleteProgram(program);
@@ -163,9 +159,4 @@ GLint Shader::getAttribId(const std::string& name) {
 }
 
 }  // namespace gl
-
-const char* enumToCharP(gl::ColorMode mode) {
-  return modes[static_cast<int>(mode)];
-}
-
 }  // namespace seg

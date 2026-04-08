@@ -71,6 +71,4 @@ class Path : public GLObject {
 
 }  // namespace object
 
-const char* enumToCharP(object::Path::VisualType type);
-
 }  // namespace seg

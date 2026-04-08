@@ -7,18 +7,12 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "seg/types.h"
+
 namespace seg {
 namespace gl {
 
 enum class ShaderType { GENERAL, GRID };
-
-enum class ColorMode {
-  UNIFORM = 0,
-  RGB = 1,
-  RGBA = 2,
-  SCALAR = 3,
-  ZAXIS = 4,
-};
 
 class Shader {
  public:
@@ -75,7 +69,5 @@ class Shader {
 
 };  // class Shader
 }  // namespace gl
-
-const char* enumToCharP(gl::ColorMode mode);
 
 }  // namespace seg

@@ -53,4 +53,17 @@ enum class ImageType {
   UCHAR_8,
 };
 
+enum class ColorMode {
+  UNIFORM = 0,
+  RGB = 1,
+  RGBA = 2,
+  SCALAR = 3,
+  ZAXIS = 4,
+};
+
+inline const char* enumToCharP(ColorMode mode) {
+  static const char* names[] = {"Uniform", "RGB", "RGBA", "Scalar", "Z-Axis"};
+  return names[static_cast<int>(mode)];
+}
+
 }  // namespace seg

@@ -12,15 +12,19 @@
 #include "seg/utilities/logger.h"
 
 namespace seg {
-namespace {  // anonymous namespace
+namespace {
 const char* visual_types[] = {"NULL",      "Line",        "Axis",
                               "Axis/Line", "CameraFrame", "CameraFrames/Line"};
+
+const char* enumToCharP(object::Path::VisualType type) {
+  return visual_types[static_cast<int>(type)];
+}
 
 inline bool hasType(object::Path::VisualType type,
                     object::Path::VisualType elem) {
   return (static_cast<int>(type) & static_cast<int>(elem));
 }
-}  // anonymous namespace
+}  // namespace
 
 namespace object {
 Path::Path() : Path(std::vector<Eigen::Matrix4f>()) {}
@@ -190,9 +194,4 @@ void Path::drawInspector() {
   }
 }
 }  // namespace object
-
-const char* enumToCharP(object::Path::VisualType type) {
-  return visual_types[static_cast<int>(type)];
-}
-
 }  // namespace seg

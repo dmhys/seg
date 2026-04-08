@@ -1,0 +1,17 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(OpenGL)
+find_dependency(glfw3)
+find_dependency(GLEW)
+find_dependency(Threads)
+find_dependency(Eigen3)
+
+if(@USE_OPENCV@)
+    find_dependency(OpenCV)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/segTargets.cmake")
+
+check_required_components(seg)

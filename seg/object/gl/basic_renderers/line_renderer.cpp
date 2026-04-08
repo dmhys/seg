@@ -68,7 +68,7 @@ void LineRenderer::drawImpl() {
 
   shader->bind();
   shader->setModelMatrix(model_matrix);
-  shader->setColorMode(gl::ColorMode::UNIFORM);
+  shader->setColorMode(ColorMode::UNIFORM);
   shader->setUniform("uniform_color", color.asEigenVector4f());
 
   glLineWidth(line_width);

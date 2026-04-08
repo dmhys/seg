@@ -13,9 +13,13 @@
 
 namespace seg {
 
-namespace {  // anonymous namespace
+namespace {
 const char* visual_types[] = {"AXIS", "Camera Frame"};
+
+const char* enumToCharP(object::Pose::VisualType type) {
+  return visual_types[static_cast<int>(type)];
 }
+}  // namespace
 
 namespace object {
 Pose::Pose() : Pose(Eigen::Matrix4f::Identity()) {}
@@ -111,9 +115,9 @@ void Pose::drawImpl() {
   shader->setUniform("model_matrix", model_matrix);
 
   if (type == VisualType::AXIS)
-    shader->setColorMode(gl::ColorMode::RGB);
+    shader->setColorMode(ColorMode::RGB);
   else {
-    shader->setColorMode(gl::ColorMode::UNIFORM);
+    shader->setColorMode(ColorMode::UNIFORM);
     shader->setUniform("uniform_color", color.asEigenVector4f());
   }
 
@@ -122,8 +126,4 @@ void Pose::drawImpl() {
 }
 
 }  // namespace object
-
-const char* enumToCharP(object::Pose::VisualType type) {
-  return visual_types[static_cast<int>(type)];
-}
 }  // namespace seg

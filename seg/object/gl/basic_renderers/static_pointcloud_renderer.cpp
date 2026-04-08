@@ -66,11 +66,11 @@ void StaticPointcloudRenderer::drawImpl() {
   shader->setUniform("uniform_color", color.asEigenVector4f());
 
   switch (color_mode) {
-    case gl::ColorMode::ZAXIS:
+    case ColorMode::ZAXIS:
       shader->setUniform("visualize_z_min", visualize_z_min);
       shader->setUniform("visualize_z_max", visualize_z_max);
       [[fallthrough]];
-    case gl::ColorMode::SCALAR:
+    case ColorMode::SCALAR:
       shader->setUniform("visualize_hue_from", visualize_hue_from);
       shader->setUniform("visualize_hue_to", visualize_hue_to);
       shader->setUniform("visualize_saturation", visualize_saturation);
@@ -95,35 +95,35 @@ void StaticPointcloudRenderer::drawInspector() {
 
   // Color mode selection
   if (ImGui::BeginCombo("Coloring", enumToCharP(color_mode))) {
-    if (ImGui::Selectable(enumToCharP(gl::ColorMode::UNIFORM),
-                          color_mode == gl::ColorMode::UNIFORM))
-      color_mode = gl::ColorMode::UNIFORM;
+    if (ImGui::Selectable(enumToCharP(ColorMode::UNIFORM),
+                          color_mode == ColorMode::UNIFORM))
+      color_mode = ColorMode::UNIFORM;
 
     if (pimpl->hasColor()) {
-      if (ImGui::Selectable(enumToCharP(gl::ColorMode::RGB),
-                            color_mode == gl::ColorMode::RGB))
-        color_mode = gl::ColorMode::RGB;
+      if (ImGui::Selectable(enumToCharP(ColorMode::RGB),
+                            color_mode == ColorMode::RGB))
+        color_mode = ColorMode::RGB;
     }
 
     if (pimpl->hasScalar()) {
-      if (ImGui::Selectable(enumToCharP(gl::ColorMode::SCALAR),
-                            color_mode == gl::ColorMode::SCALAR))
-        color_mode = gl::ColorMode::SCALAR;
+      if (ImGui::Selectable(enumToCharP(ColorMode::SCALAR),
+                            color_mode == ColorMode::SCALAR))
+        color_mode = ColorMode::SCALAR;
     }
 
-    if (ImGui::Selectable(enumToCharP(gl::ColorMode::ZAXIS),
-                          color_mode == gl::ColorMode::ZAXIS))
-      color_mode = gl::ColorMode::ZAXIS;
+    if (ImGui::Selectable(enumToCharP(ColorMode::ZAXIS),
+                          color_mode == ColorMode::ZAXIS))
+      color_mode = ColorMode::ZAXIS;
 
     ImGui::EndCombo();
   }
 
-  if (color_mode == gl::ColorMode::UNIFORM) {
+  if (color_mode == ColorMode::UNIFORM) {
     if (ImGui::TreeNode("Color Picker")) {
       ImGui::ColorPicker3("##", (float*)&color, color_edit_flag);
       ImGui::TreePop();
     }
-  } else if (color_mode == gl::ColorMode::ZAXIS) {
+  } else if (color_mode == ColorMode::ZAXIS) {
     if (ImGui::TreeNode("Color Options")) {
       ImGui::SliderFloat("Hue From", &visualize_hue_from, 0.0f, 1.0f,
                          "Hue From   = %.2f");

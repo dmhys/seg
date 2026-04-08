@@ -6,6 +6,9 @@ project(
     LANGUAGES CXX
 )
 
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
 # build options ==========================================
 option(BUILD_EXAMPLES "Build example executables" ON)
 option(USE_LOG        "Enable logging"            ON)
@@ -62,7 +65,7 @@ target_include_directories(seg_imgui PUBLIC
 )
 
 target_link_libraries(seg_imgui PUBLIC
-    ${OPENGL_LIBRARIES}
+    OpenGL::GL
     ${CMAKE_DL_LIBS}
     glfw
 )
@@ -82,7 +85,7 @@ target_include_directories(seg
 
 target_link_libraries(seg
   PUBLIC
-    ${OPENGL_LIBRARIES}
+    OpenGL::GL
     glfw
     GLEW::GLEW
     Threads::Threads
@@ -105,3 +108,49 @@ endif()
 if(BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
+
+# install ================================================
+install(TARGETS seg
+    EXPORT segTargets
+    RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# public headers: seg/ top-level
+file(GLOB _segTopHeaders seg/*.h)
+install(FILES ${_segTopHeaders} seg/seg
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/seg
+)
+
+# public headers: seg/object/ subtree (all public)
+install(DIRECTORY seg/object/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/seg/object
+    FILES_MATCHING PATTERN "*.h"
+    PATTERN "basic_renderers" EXCLUDE
+)
+
+install(EXPORT segTargets
+    FILE segTargets.cmake
+    NAMESPACE seg::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/seg
+)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/segConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/segConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/seg
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/segConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/segConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/segConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/seg
+)
