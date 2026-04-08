@@ -36,7 +36,9 @@ class ObjectManager {
       const std::function<void(const std::string&, ObjectBase&)>& fn);
 
  private:
-  std::string makeObjectName(object::ObjectBase* object);
+  std::string insertObject(const std::shared_ptr<ObjectBase>& obj,
+                           const std::string& name = "");
+  std::string generateName(ObjectBase* object);
 
   gl::Shader* shader = nullptr;
   std::mutex mtx_object;

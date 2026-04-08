@@ -25,38 +25,46 @@ void ObjectManager::onCoreShutdown() {
   std::lock_guard<std::mutex> lock(mtx_object);
   shut_down = true;
 
-  for (auto&& object_iter : objects) {
-    auto&& object = object_iter.second;
+  for (auto&& [_, object] : objects) {
     if (object->getObjectLayer() != ObjectLayer::GL) continue;
     static_cast<GLObject*>(object.get())->glFree();
   }
+
+  for (auto&& object : objects_to_delete) {
+    if (object->getObjectLayer() != ObjectLayer::GL) continue;
+    static_cast<GLObject*>(object.get())->glFree();
+  }
+  objects_to_delete.clear();
 }
 
 std::string ObjectManager::addObject(ObjectBase* obj) {
-  std::string name = makeObjectName(obj);
-  addObject(name, std::shared_ptr<ObjectBase>(obj));
-  return name;
+  return insertObject(std::shared_ptr<ObjectBase>(obj));
 }
 
 std::string ObjectManager::addObject(const std::shared_ptr<ObjectBase>& obj) {
-  std::string name = makeObjectName(obj.get());
-  addObject(name, obj);
-  return name;
+  return insertObject(obj);
 }
 
 void ObjectManager::addObject(const std::string& name, ObjectBase* obj) {
-  addObject(name, std::shared_ptr<ObjectBase>(obj));
+  insertObject(std::shared_ptr<ObjectBase>(obj), name);
 }
 
 void ObjectManager::addObject(const std::string& name,
                               const std::shared_ptr<ObjectBase>& obj) {
+  insertObject(obj, name);
+}
+
+std::string ObjectManager::insertObject(const std::shared_ptr<ObjectBase>& obj,
+                                        const std::string& _name) {
   std::lock_guard<std::mutex> lock(mtx_object);
-  if (shut_down) return;
+  if (shut_down) return "";
+
+  std::string name = _name.empty() ? generateName(obj.get()) : _name;
 
   if (objects.find(name) != objects.end()) {
     LOG_WARN("objectManager - [{}] already exists !", name);
     LOG_WARN("Add Object fail.");
-    return;
+    return "";
   }
 
   if (obj->getObjectLayer() == ObjectLayer::GL && shader)
@@ -66,6 +74,7 @@ void ObjectManager::addObject(const std::string& name,
 
   LOG_INFO("Object '{}({})' added. Total: {}", name, obj->getType(),
            objects.size());
+  return name;
 }
 
 std::weak_ptr<ObjectBase> ObjectManager::getObject(const std::string& name) {
@@ -93,8 +102,7 @@ bool ObjectManager::deleteObject(const std::string& name) {
 void ObjectManager::clearObjects() {
   std::lock_guard<std::mutex> lock(mtx_object);
 
-  for (auto&& object_iter : objects)
-    objects_to_delete.push_back(object_iter.second);
+  for (auto&& [_, object] : objects) objects_to_delete.push_back(object);
 
   objects.clear();
 }
@@ -110,7 +118,7 @@ void ObjectManager::draw() {
     static_cast<GLObject*>(object.get())->glFree();
   }
 
-  for (const auto& object : objects) object.second->draw();
+  for (const auto& [_, object] : objects) object->draw();
 }
 
 void ObjectManager::forEachObject(
@@ -119,17 +127,13 @@ void ObjectManager::forEachObject(
   for (auto& [name, obj] : objects) fn(name, *obj);
 }
 
-std::string ObjectManager::makeObjectName(object::ObjectBase* obj) {
+std::string ObjectManager::generateName(ObjectBase* obj) {
   std::string base_name = obj->getType();
-
-  std::lock_guard<std::mutex> lock(mtx_object);
 
   if (objects.find(base_name) == objects.end()) return base_name;
 
   int i = 2;
-  while (objects.find(base_name + std::to_string(i)) != objects.end()) {
-    i++;
-  }
+  while (objects.find(base_name + std::to_string(i)) != objects.end()) i++;
 
   return base_name + std::to_string(i);
 }
