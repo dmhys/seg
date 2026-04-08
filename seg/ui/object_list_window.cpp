@@ -20,16 +20,16 @@ void ObjectListWindow::drawImpl() {
   ImGui::Begin("Objects", nullptr, window_flag);
 
   int i = -1;  // to resolve id collision
-  for (auto& object : object_manager->objects) {
+  object_manager->forEachObject([&](const std::string& name, object::ObjectBase& obj) {
     i++;
-    const bool is_selected = (object.first == getConfig().selected_object_name);
+    const bool is_selected = (name == getConfig().selected_object_name);
     ImGui::Checkbox((std::string("##") + std::to_string(i)).c_str(),
-                    &object.second.get()->is_visible);
+                    &obj.is_visible);
     ImGui::SameLine();
-    if (ImGui::Selectable(object.first.c_str(), is_selected)) {
-      getConfig().selected_object_name = object.first;
+    if (ImGui::Selectable(name.c_str(), is_selected)) {
+      getConfig().selected_object_name = name;
     }
-  }  // TODO: implement object deselection when clicking empty area
+  });
 
   ImGui::End();
 

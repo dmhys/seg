@@ -68,13 +68,13 @@ void ObjectManager::addObject(const std::string& name,
            objects.size());
 }
 
-ObjectBase* ObjectManager::getObject(const std::string& name) {
+std::weak_ptr<ObjectBase> ObjectManager::getObject(const std::string& name) {
   std::lock_guard<std::mutex> lock(mtx_object);
 
   auto obj_iter = objects.find(name);
-  if (obj_iter == objects.end()) return nullptr;
+  if (obj_iter == objects.end()) return {};
 
-  return obj_iter->second.get();
+  return obj_iter->second;
 }
 
 bool ObjectManager::deleteObject(const std::string& name) {
@@ -100,16 +100,23 @@ void ObjectManager::clearObjects() {
 }
 
 void ObjectManager::draw() {
-  for (auto&& object : objects_to_delete) {
-    if (object->getObjectLayer() != ObjectLayer::GL) continue;
-
-    if (object.use_count() != 1) static_cast<GLObject*>(object.get())->glFree();
-  }
-  objects_to_delete.clear();
+  std::vector<std::shared_ptr<ObjectBase>> to_delete;
 
   std::lock_guard<std::mutex> lock(mtx_object);
+  to_delete.swap(objects_to_delete);
+
+  for (auto&& object : to_delete) {
+    if (object->getObjectLayer() != ObjectLayer::GL) continue;
+    static_cast<GLObject*>(object.get())->glFree();
+  }
 
   for (const auto& object : objects) object.second->draw();
+}
+
+void ObjectManager::forEachObject(
+    const std::function<void(const std::string&, ObjectBase&)>& fn) {
+  std::lock_guard<std::mutex> lock(mtx_object);
+  for (auto& [name, obj] : objects) fn(name, *obj);
 }
 
 std::string ObjectManager::makeObjectName(object::ObjectBase* obj) {

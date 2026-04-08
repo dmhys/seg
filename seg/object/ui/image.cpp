@@ -61,6 +61,10 @@ Image::Image(std::string _name) : name(_name) {
                   .build();
 }
 
+Image::~Image() {
+  if (texture_id != 0) glDeleteTextures(1, &texture_id);
+}
+
 void Image::setData(void* image_buffer, ImageSize size, ImageType type) {
   LOG_WARN("NOT YET IMPLEMENTED!");
 }
@@ -105,14 +109,13 @@ void Image::setData(const cv::Mat& image) { setData(image.clone()); }
 void Image::updateTexture() {
   auto lock = std::unique_lock<std::mutex>(mtx);
 
-  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
   glBindTexture(GL_TEXTURE_2D, texture_id);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
   if (image_buffer.channels() == 3)
     cv::cvtColor(image_buffer, image_buffer, cv::COLOR_BGR2RGB);

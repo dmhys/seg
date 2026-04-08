@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -10,10 +11,6 @@ namespace seg {
 namespace gl {
 class Shader;
 };
-namespace ui {
-class ObjectListWindow;
-};
-
 namespace object {
 class ObjectBase;
 
@@ -28,17 +25,19 @@ class ObjectManager {
   void addObject(const std::string& name, ObjectBase* obj);
   void addObject(const std::string& name,
                  const std::shared_ptr<ObjectBase>& obj);
-  ObjectBase* getObject(const std::string& name);
+  std::weak_ptr<ObjectBase> getObject(const std::string& name);
 
   bool deleteObject(const std::string& name);
   void clearObjects();
 
   void draw();
 
+  void forEachObject(
+      const std::function<void(const std::string&, ObjectBase&)>& fn);
+
  private:
   std::string makeObjectName(object::ObjectBase* object);
 
-  friend class ui::ObjectListWindow;
   gl::Shader* shader = nullptr;
   std::mutex mtx_object;
   bool shut_down = false;

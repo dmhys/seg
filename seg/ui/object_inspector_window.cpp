@@ -22,7 +22,7 @@ void ObjectInspectorWindow::drawImpl() {
 
   auto& name = getConfig().selected_object_name;
   if (!name.empty()) {
-    auto* obj = object_manager->getObject(name);
+    auto obj = object_manager->getObject(name).lock();
     if (obj) {
       ImGui::TextUnformatted(name.c_str());
       ImGui::Separator();

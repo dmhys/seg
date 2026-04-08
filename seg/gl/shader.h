@@ -23,10 +23,13 @@ enum class ColorMode {
 class Shader {
  public:
   Shader() {};
+  ~Shader();
   void init(ShaderType type);
+
   void bind();
   void unbind();
 
+  ShaderType getType() const { return type; }
   GLint getUniformId(const std::string& name);
   GLint getAttribId(const std::string& name);
 
@@ -65,6 +68,7 @@ class Shader {
   void attatchShader(const std::string& vert_src, const std::string& frag_src);
   void setDefaultSettings();
 
+  ShaderType type = ShaderType::GENERAL;
   GLuint program = 0;
   std::unordered_map<std::string, GLint> uniform_id_cache;
   std::unordered_map<std::string, GLint> attrib_id_cache;

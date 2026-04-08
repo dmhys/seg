@@ -46,10 +46,15 @@ const char* modes[] = {"Uniform", "RGB", "RGBA", "Scalar", "Z-Axis"};
 }
 
 namespace gl {
-void Shader::init(ShaderType type) {
+Shader::~Shader() {
+  if (program != 0) glDeleteProgram(program);
+}
+
+void Shader::init(ShaderType _type) {
+  type = _type;
   auto src = getSource(type);
   attatchShader(src.vert, src.frag);
-  if (type == ShaderType::GENERAL) setDefaultSettings();
+  setDefaultSettings();
 }
 
 void Shader::attatchShader(const std::string& vert_src,
@@ -107,13 +112,22 @@ void Shader::attatchShader(const std::string& vert_src,
 }
 
 void Shader::setDefaultSettings() {
-  setUniform("visualize_hue_from", 1.0f);
-  setUniform("visualize_hue_to", 0.3f);
-  setUniform("visualize_saturation", 0.6f);
-  setUniform("visualize_value", 0.7f);
-
-  setUniform("visualize_z_min", 1.0f);
-  setUniform("visualize_z_max", 0.0f);
+  bind();
+  switch (type) {
+    case ShaderType::GENERAL:
+      setUniform("visualize_hue_from", 1.0f);
+      setUniform("visualize_hue_to", 0.3f);
+      setUniform("visualize_saturation", 0.6f);
+      setUniform("visualize_value", 0.7f);
+      setUniform("visualize_z_min", 1.0f);
+      setUniform("visualize_z_max", 0.0f);
+      break;
+    case ShaderType::GRID:
+      setUniform("grid_color", Eigen::Vector4f(0.5f, 0.5f, 0.5f, 0.5f));
+      setUniform("grid_fade_distance", 200.0f);
+      break;
+  }
+  unbind();
 }
 
 void Shader::bind() { glUseProgram(program); }

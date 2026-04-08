@@ -32,7 +32,8 @@ void main() {
     if (fade <= 0.0) discard;
 
     // two-level grid: 1m thin + 10m thick
-    float g1 = grid(world_pos.xy, 1.0) * 0.4;
+    float detail_fade = 1.0 - smoothstep(4.0, 8.0, length(fwidth(world_pos.xy)));
+    float g1 = grid(world_pos.xy, 1.0) * 0.4 * detail_fade;
     float g10 = grid(world_pos.xy, 10.0) * 0.7;
     float g = max(g1, g10);
 

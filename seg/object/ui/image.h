@@ -21,6 +21,7 @@ namespace object {
 class Image : public UIObject {
  public:
   Image(std::string name);
+  ~Image() override;
 
   void setData(void* image_buffer, ImageSize size, ImageType type);
 

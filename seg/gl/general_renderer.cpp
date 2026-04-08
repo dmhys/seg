@@ -93,8 +93,8 @@ void GeneralRenderer::glMalloc() {
     if (eao == 0) glGenBuffers(1, &eao);
 
     index_count = tmp_indices.size() * 3;
-    glBindBuffer(GL_ARRAY_BUFFER, eao);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int) * index_count,
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eao);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * index_count,
                  tmp_indices.data(), static_cast<int>(buffer_type));
     tmp_indices.clear();
   }

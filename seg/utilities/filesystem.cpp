@@ -16,7 +16,7 @@ std::vector<std::string> getFileList(const std::string& directory,
   struct dirent* entry = nullptr;
 
   const bool do_filter = extension != "" && extension != ".";
-  if (extension.front() != '.') extension = "." + extension;
+  if (do_filter && extension.front() != '.') extension = "." + extension;
 
   dir = opendir(directory.c_str());
   if (dir == nullptr) throw std::invalid_argument("No such directory.");

@@ -61,6 +61,15 @@ void Path::setShader(gl::Shader* _shader) {
   pose_renderer->setShader(_shader);
 }
 
+void Path::setCameraParameters(float width, float height, float focal_length) {
+  pose_renderer->setCameraParameters(width, height, focal_length);
+}
+
+void Path::setCameraParameters(
+    float width, float height, float fx, float fy, float cx, float cy) {
+  pose_renderer->setCameraParameters(width, height, fx, fy, cx, cy);
+}
+
 void Path::reset() {
   std::lock_guard<std::mutex> lock(pose_mtx);
   num_pose = 0;

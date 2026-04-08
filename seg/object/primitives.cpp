@@ -263,6 +263,7 @@ std::vector<Eigen::Vector3f> primitives::Wireframe(
 
       auto inserted = lut.insert({edge, true});
       const bool& is_new_edge = inserted.second;
+      if (!is_new_edge) continue;
 
       ret.push_back(vertices[edge.first]);
       ret.push_back(vertices[edge.second]);
