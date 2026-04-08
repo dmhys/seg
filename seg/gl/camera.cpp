@@ -26,6 +26,7 @@ void Camera::init(int width, int height) {
 }
 
 void Camera::onScreenResize(int width, int height) {
+  if (width == 0 || height == 0) return;
   window_size << width, height;
   inverse_aspect = (float)height / (float)width;
   updateProjectionMatrix();

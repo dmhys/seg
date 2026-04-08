@@ -72,7 +72,7 @@ std::vector<Eigen::Vector3f> primitives::Grid(Eigen::Vector2f max,
     throw std::invalid_argument(
         "primitives::Grid - Invlalid max/min boundary.");
 
-  if (cell_size.x() < 0 || cell_size.y() < 0)
+  if (cell_size.x() <= 0 || cell_size.y() <= 0)
     throw std::invalid_argument(
         "primitives::Grid - given cell size is negative.");
 
@@ -135,6 +135,7 @@ primitives::Axis(float axis_length) {
 
 std::vector<Eigen::Vector3f> primitives::GaussianRandomVertices(
     int sample_count, Eigen::Vector3f mean, float stddev) {
+  if (sample_count <= 0) return {};
   std::random_device rd;
   std::mt19937 gen(rd());
   std::normal_distribution<float> distrib(0.0f, stddev);
