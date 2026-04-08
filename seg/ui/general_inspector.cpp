@@ -40,6 +40,8 @@ void GeneralInspector::drawFunctions() {
     LOG_ERROR("General Inpector - Error While executing given draw Function!");
     LOG_ERROR(e.what());
   }
+
+  ImGui::PopItemWidth();
 }
 
 }  // namespace ui
