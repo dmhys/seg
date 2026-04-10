@@ -5,7 +5,7 @@
 #include <Eigen/Dense>
 
 #include "seg/core/config.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace {
 const float PI = std::acos(-1);

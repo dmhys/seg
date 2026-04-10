@@ -30,6 +30,7 @@ class App {
                   const WindowSize& window_size,
                   ThreadPolicy thread_policy);
   void appMain();
+  void requestShutdown();
   void waitUntilClosed();
   bool isRunning() const { return running.load(); }
 

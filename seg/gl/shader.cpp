@@ -7,7 +7,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace {
 const std::string general_vert =

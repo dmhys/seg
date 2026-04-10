@@ -6,7 +6,7 @@
 
 #include <imgui.h>
 
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace seg {
 namespace ui {

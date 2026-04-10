@@ -7,7 +7,7 @@
 #include <imgui.h>
 
 #include "seg/ui/general_inspector.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace {  // anonymous namespace
 void getImageFitPosAndSize(int image_width,

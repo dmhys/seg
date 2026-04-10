@@ -8,7 +8,7 @@
 #include "seg/gl/shader.h"
 #include "seg/object/gl_object.h"
 #include "seg/object/object_base.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace seg {
 namespace object {

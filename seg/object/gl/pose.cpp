@@ -9,7 +9,7 @@
 #include "seg/gl/shader.h"
 #include "seg/object/primitives.h"
 #include "seg/ui/general_inspector.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace seg {
 

@@ -19,7 +19,7 @@
 #include "seg/resources/roboto_regular.h"
 #include "seg/types.h"
 #include "seg/ui/controller.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace {
 void glfwErorrCallback(int error, const char* description) {
@@ -49,6 +49,10 @@ void App::initialize(const std::string& _window_name,
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
     if (!window) throw std::runtime_error("SEG window creation failed");
   }
+}
+
+void App::requestShutdown() {
+  turn_off_requested.store(true);
 }
 
 void App::waitUntilClosed() {

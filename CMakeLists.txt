@@ -11,7 +11,7 @@ include(CMakePackageConfigHelpers)
 
 # build options ==========================================
 option(BUILD_EXAMPLES "Build example executables" ON)
-option(USE_LOG        "Enable logging"            ON)
+option(USE_LOGGER     "Enable logging"            ON)
 option(USE_SPDLOG     "Use spdlog for logging"    ON)
 option(USE_OPENCV     "Enable OpenCV support"      ON)
 
@@ -37,7 +37,7 @@ find_package(glfw3 REQUIRED)
 find_package(Threads REQUIRED)
 find_package(GLEW REQUIRED)
 
-if(USE_LOG AND USE_SPDLOG)
+if(USE_LOGGER AND USE_SPDLOG)
   add_subdirectory(${SEG_ROOT}/3rdparty/spdlog EXCLUDE_FROM_ALL)
 endif()
 
@@ -91,11 +91,14 @@ target_link_libraries(seg
     Threads::Threads
   PRIVATE
     seg_imgui
-    $<$<AND:$<BOOL:${USE_LOG}>,$<BOOL:${USE_SPDLOG}>>:spdlog::spdlog>
+    $<$<AND:$<BOOL:${USE_LOGGER}>,$<BOOL:${USE_SPDLOG}>>:spdlog::spdlog>
 )
 
-if(USE_LOG AND USE_SPDLOG)
-  target_compile_definitions(seg PRIVATE SPDLOG)
+if(USE_LOGGER)
+  target_compile_definitions(seg PRIVATE USE_LOGGER)
+  if(USE_SPDLOG)
+    target_compile_definitions(seg PRIVATE USE_SPDLOG)
+  endif()
 endif()
 
 if(USE_OPENCV)

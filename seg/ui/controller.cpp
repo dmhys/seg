@@ -11,7 +11,7 @@
 #include "seg/ui/main_menu.h"
 #include "seg/ui/object_inspector_window.h"
 #include "seg/ui/object_list_window.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace seg {
 namespace ui {

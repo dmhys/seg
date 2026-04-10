@@ -13,7 +13,7 @@
 #include "seg/seg.h"
 #include "seg/types.h"
 #include "seg/ui/controller.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace {
 std::once_flag instance_flag;
@@ -43,22 +43,20 @@ void createInstances() {
 }
 
 void setOptions(Options options) {
-#ifdef SPDLOG
-  spdlog::set_pattern("\033[1;94m[SEG]\033[0m[%t][%H:%M:%S][%^%l%$] %v");
-#endif
-  SET_LOGGER_LEVEL(options.verbosity);
-
+  SET_LOG_LEVEL(static_cast<int>(options.verbosity));
   getConfig().theme = options.theme;
 }
 
 void initializeApp(const std::string& window_name,
                    const WindowSize& window_size,
                    ThreadPolicy thread_policy) {
-  LOG_INFO("Initializing . . .");
+  LOG_INFO("{}", std::string(80, '='));
+  LOG_INFO("Initializing 🛞 SEG . . .");
 
   app->initialize(window_name, window_size, thread_policy);
 
-  LOG_INFO("Initialized!");
+  LOG_INFO("🛞 SEG good to go!");
+  LOG_INFO("{}", std::string(80, '='));
 }
 }  // namespace
 
@@ -112,6 +110,12 @@ bool deleteObject(const std::string& name) {
   ensureInitialized();
 
   return object_manager->deleteObject(name);
+}
+
+void shutdown() {
+  ensureInitialized();
+
+  app->requestShutdown();
 }
 
 void waitUntilClosed() {

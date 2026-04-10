@@ -64,6 +64,13 @@ bool deleteObject(const std::string& name);
 void run();
 
 /**
+ * @brief Requests SEG to shut down.
+ *        Signals the render loop to exit. Non-blocking.
+ *        After this call, run() or waitUntilClosed() will return.
+ */
+void shutdown();
+
+/**
  * @brief Blocks until the SEG window is closed.
  */
 void waitUntilClosed();

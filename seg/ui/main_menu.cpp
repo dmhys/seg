@@ -6,7 +6,7 @@
 
 #include "seg/core/config.h"
 #include "seg/object/ui_object.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace {
 bool show_demowindow = false;

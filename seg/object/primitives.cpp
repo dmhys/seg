@@ -11,7 +11,7 @@
 #include <Eigen/Dense>
 
 #include "seg/types.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace {
 namespace icosahedron {

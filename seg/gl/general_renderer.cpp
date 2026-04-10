@@ -7,7 +7,7 @@
 #include <GLFW/glfw3.h>
 
 #include "seg/gl/shader.h"
-#include "seg/utilities/logger.h"
+#include "seg/internal/logger.h"
 
 namespace seg {
 namespace gl {
